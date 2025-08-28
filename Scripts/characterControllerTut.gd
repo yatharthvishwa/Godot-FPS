@@ -6,7 +6,8 @@ extends CharacterBody3D
 @onready var Standing_collision_shape = $Standing_collision_shape
 @onready var Crouching_collision_shape = $Crouching_collision_shape
 @onready var roof_check = $RoofCheck
-@onready var camera_3d = $Nek/Head/Camera3D
+@onready var camera_3d = $Nek/Head/eyes/Camera3D
+@onready var eyes = $Nek/Head/eyes
 
 
 var direction = Vector3.ZERO
@@ -36,9 +37,24 @@ var slide_timer = 0.0
 var slide_timer_max = 1.0
 var slide_vector = Vector2.ZERO
 var slide_speed = 10.0
-var slide_jump_boost_timer =0.0
-var slide_jump_boost_timer_max = 1.05
 var slide_jump_boost_velocity = 8.2
+
+#Headbobing vars
+const head_bobbing_sprinting_speed = 22.0
+const head_bobbing_walking_speed = 14.0
+const head_bobbing_crouching_speed =10.0
+	  #speed will be how fast we move side to side and up and down, intensity will be by how much
+const head_bobbing_sprinting_intensity = 0.2
+const head_bobbing_walking_intensity = 0.10 
+const head_bobbing_crouching_intensity = 0.05
+	  #now we'll need variables to keep track of where we are in the sin function
+var head_bobbing_vector = Vector2.ZERO #so this vector has x and y value so it'll keep track of up and down and side to side
+var head_bobbing_index = 0.0 #this is how far along the sin function we are 
+var head_bobbing_current_intesity = 0.0 #we'll just swap this value with respect to state
+ 
+
+
+
 
 #mouse capturing logic
 #for capturing the mouse inside the window we'll use the ready function
@@ -86,6 +102,8 @@ func _physics_process(delta):
 			slide_timer = slide_timer_max
 			print("start")
 			slide_vector = input_dir #this line will capture our current input and repeat it for slide
+			if Input.is_action_pressed("move_back") and SLIDING: #trying to cancel our slide
+				SLIDING = false
 		
 		WALKING = false
 		SPRINTING = false
@@ -121,7 +139,10 @@ func _physics_process(delta):
 	
 	#Free looking
 	
-	if Input.is_action_pressed("freelook") :
+	if SLIDING:
+		camera_3d.rotation.z = lerp(camera_3d.rotation.z, deg_to_rad(5.0), delta * lerp_speed)
+	
+	elif Input.is_action_pressed("freelook") :
 		FREELOOKING = true
 		camera_3d.rotation.z = -deg_to_rad(nek.rotation.y * free_look_tilt_amount)#y around neck rotate karegi toh
 	else:
@@ -139,8 +160,32 @@ func _physics_process(delta):
 			FREELOOKING = false
 		
 	
-
-
+	#HANDLE HeadBOB
+	
+	if SPRINTING:
+		head_bobbing_current_intesity = head_bobbing_sprinting_intensity
+		head_bobbing_index += head_bobbing_sprinting_speed * delta
+	elif WALKING:
+		head_bobbing_current_intesity = head_bobbing_walking_intensity
+		head_bobbing_index += head_bobbing_walking_speed * delta
+	elif CROUCHING:
+		head_bobbing_current_intesity = head_bobbing_crouching_intensity
+		head_bobbing_index += head_bobbing_crouching_speed * delta
+		
+	if is_on_floor() and !SLIDING and !SLIDEJUMPBOOST and  input_dir != Vector2.ZERO:
+		head_bobbing_vector.y = sin(head_bobbing_index)
+		head_bobbing_vector.x = sin(head_bobbing_index/2) + 0.5
+		
+		eyes.position.y = lerp(eyes.position.y, head_bobbing_vector.y * (head_bobbing_current_intesity / 1.75), delta*lerp_speed) #divinding by 2 as in headbob it moves more from side to side than up and down
+		 #ngl dividing the y headbob by 0.5 gives more aggresive feeling and can be used for future
+		eyes.position.x = lerp(eyes.position.x, head_bobbing_vector.x * (head_bobbing_current_intesity ), delta*lerp_speed)
+	else :
+		eyes.position.x = lerp(eyes.position.x, 0.0, delta*lerp_speed)
+		eyes.position.y = lerp(eyes.position.y, 0.0, delta*lerp_speed)
+	
+	
+	
+		
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -148,23 +193,16 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
+		SLIDEJUMPBOOST = false
+	
 	
 	#SLIDEBOOSTJUMP LOGIC
 	
 	if Input.is_action_just_pressed("jump") and SLIDING and is_on_floor():
-		slide_jump_boost_timer = slide_jump_boost_timer_max
+		velocity.y = slide_jump_boost_velocity
 		SLIDEJUMPBOOST = true
-		print(slide_jump_boost_timer)
-		
-		if SLIDEJUMPBOOST:
-			slide_jump_boost_timer -= delta
-			velocity.y = slide_jump_boost_velocity
-			
-			if slide_jump_boost_timer <=0:
-				SLIDEJUMPBOOST = false
-		
-		
-		
+	else : SLIDEJUMPBOOST = false
+
 
 	
 	
@@ -182,11 +220,6 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction.x * current_speed
 		velocity.z = direction.z * current_speed
-		
-		#SLIDEJUMPBOOST movementum not zero when it ends
-		if SLIDEJUMPBOOST:
-			velocity.x = direction.x * (1 + slide_jump_boost_timer) * current_speed 
-			velocity.z = direction.z * (1 + slide_jump_boost_timer) * current_speed
 		
 		#SLIDING LOGIC
 		
