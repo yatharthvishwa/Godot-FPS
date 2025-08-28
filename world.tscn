@@ -1,0 +1,158 @@
+[gd_scene load_steps=22 format=3 uid="uid://hy2jua5thcqs"]
+
+[ext_resource type="Shader" uid="uid://bn5ab6wcw45s8" path="res://ps1styleshader/ps1 postprcess.gdshader" id="1_gbfbk"]
+[ext_resource type="PackedScene" uid="uid://bsq16apok4nj2" path="res://Scripts/player.tscn" id="1_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://gl4fo56w42du" path="res://assets/k_prototype-textures/PNG/Dark/texture_04.png" id="2_aqk2v"]
+[ext_resource type="Texture2D" uid="uid://bhlv1tyygvwhy" path="res://assets/k_prototype-textures/PNG/Dark/texture_01.png" id="3_036b0"]
+[ext_resource type="Shader" uid="uid://bicvahcjmv80i" path="res://ps1styleshader/ps1Modelshader.gdshader" id="5_dwbse"]
+[ext_resource type="Texture2D" uid="uid://b0yxd3mp31qmn" path="res://assets/k_prototype-textures/PNG/Orange/texture_02.png" id="6_pkg7o"]
+[ext_resource type="Texture2D" uid="uid://0rckaksd14ej" path="res://assets/k_prototype-textures/PNG/Green/texture_11.png" id="7_pkg7o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wse8f"]
+shader = ExtResource("1_gbfbk")
+shader_parameter/enabled = true
+shader_parameter/dithering = true
+shader_parameter/colors = 16
+shader_parameter/dither_size = 1
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pkg7o"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_gbfbk"]
+sky_material = SubResource("ProceduralSkyMaterial_pkg7o")
+
+[sub_resource type="Environment" id="Environment_ioo17"]
+background_mode = 2
+sky = SubResource("Sky_gbfbk")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d3vsi"]
+albedo_texture = ExtResource("2_aqk2v")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fusj3"]
+albedo_texture = ExtResource("2_aqk2v")
+uv1_scale = Vector3(-0.435, -0.435, -0.435)
+uv1_triplanar = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gbfbk"]
+
+[sub_resource type="Curve3D" id="Curve3D_h5fbp"]
+_data = {
+"points": PackedVector3Array(-14.27, 14.3839, 0, 14.27, -14.3839, 0, 0.0295296, 0.0590057, 0, -24.1099, 6.94678, 5.41278, 24.1099, -6.94678, -5.41278, 34.7418, -16.2357, -0.456631),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_fusj3"]
+_data = {
+"points": PackedVector3Array(-58.0192, 111.012, 0, 58.0192, -111.012, 0, 134.89, 122.067, 0, -6.52814, -13.8725, 0, 6.52814, 13.8725, 0, 529.1, 165.693, -14.9257),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tdxgw"]
+albedo_texture = ExtResource("3_036b0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ioo17"]
+render_priority = 0
+shader = ExtResource("5_dwbse")
+shader_parameter/affine_mapping = true
+shader_parameter/albedo = ExtResource("6_pkg7o")
+shader_parameter/alpha_scissor = 0.5
+shader_parameter/jitter = 0.25
+shader_parameter/resolution = Vector2i(320, 240)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gv8g2"]
+uv1_triplanar = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
+render_priority = 0
+shader = ExtResource("5_dwbse")
+shader_parameter/affine_mapping = false
+shader_parameter/albedo = ExtResource("7_pkg7o")
+shader_parameter/alpha_scissor = 0.5
+shader_parameter/jitter = 0.597
+shader_parameter/resolution = Vector2i(320, 240)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pkg7o"]
+size = Vector2(100, 100)
+
+[node name="World" type="Node3D"]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+material = SubResource("ShaderMaterial_wse8f")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(640, 480)
+render_target_update_mode = 4
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
+environment = SubResource("Environment_ioo17")
+
+[node name="CharacterBody3D" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_tlwt5")]
+transform = Transform3D(-0.972117, 0, 0.234497, 0, 1, 0, -0.234497, 0, -0.972117, -52.5388, 224.712, 0.115609)
+collision_layer = 2
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+material_override = SubResource("StandardMaterial3D_d3vsi")
+use_collision = true
+size = Vector3(1000, 1, 1000)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -99, 224, 0)
+material_override = SubResource("StandardMaterial3D_fusj3")
+use_collision = true
+size = Vector3(100, 1, 100)
+material = SubResource("ShaderMaterial_gbfbk")
+
+[node name="Path3D2" type="Path3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(3.26969, 0, 0, 0, 3.26969, 0, 0, 0, 3.26969, -49, 224, 0)
+curve = SubResource("Curve3D_h5fbp")
+
+[node name="Path3D3" type="Path3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(3.26969, 0, 0, 0, 3.26969, 0, 0, 0, 3.26969, 0.61687, 185.464, -22.0856)
+curve = SubResource("Curve3D_h5fbp")
+
+[node name="Path3D" type="Path3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(5.10634, 0, 0, 0, 5.10634, 0, 0, 0, 5.10634, -778.201, -387.262, 0)
+curve = SubResource("Curve3D_fusj3")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="SubViewportContainer/SubViewport/Path3D"]
+material_override = SubResource("StandardMaterial3D_tdxgw")
+use_collision = true
+polygon = PackedVector2Array(2, 2, 4, 0, 0, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_rotation_accurate = false
+path_local = true
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 226, 3)
+material_override = SubResource("ShaderMaterial_ioo17")
+use_collision = true
+material = SubResource("StandardMaterial3D_gv8g2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 224.697, 3)
+material_override = SubResource("ShaderMaterial_pkg7o")
+mesh = SubResource("PlaneMesh_pkg7o")
+skeleton = NodePath("../../..")
+
+[node name="stage" type="Node3D" parent="."]

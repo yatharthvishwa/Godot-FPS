@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://bsq16apok4nj2"]
+
+[ext_resource type="Script" uid="uid://cm3bmvo8uglwf" path="res://Scripts/player.gd" id="1_3eola"]
+[ext_resource type="Script" uid="uid://dmhxbu3jxytb" path="res://Scripts/camera_holder.gd" id="2_0bb2n"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_st4x2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3eola"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0bb2n"]
+height = 1.4
+
+[node name="PlayerController" type="CharacterBody3D"]
+script = ExtResource("1_3eola")
+
+[node name="CameraHolder" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_0bb2n")
+
+[node name="Camera3D" type="Camera3D" parent="CameraHolder"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61397, -0.00339824)
+
+[node name="WorldModel" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="playermodel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_st4x2")
+skeleton = NodePath("../WorldModel")
+
+[node name="standingHitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_3eola")
+
+[node name="crouchingHitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("CapsuleShape3D_0bb2n")
+
+[node name="RayCasts" type="Node3D" parent="."]
+
+[node name="CeilingCheck" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+target_position = Vector3(0, 4, 0)
+collide_with_areas = true
+debug_shape_custom_color = Color(1.54018e-06, 0.571394, 0.825788, 1)
+
+[node name="FloorCheck" type="RayCast3D" parent="RayCasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+target_position = Vector3(0, -4, 0)
+collide_with_areas = true
+debug_shape_custom_color = Color(0.792455, 0, 0.0924457, 1)
