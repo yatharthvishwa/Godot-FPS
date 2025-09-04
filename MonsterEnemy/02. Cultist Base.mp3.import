@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cjae0g8ww244w"
+path="res://.godot/imported/02. Cultist Base.mp3-fd8df5d45ac9b9587e081728596f7860.mp3str"
+
+[deps]
+
+source_file="res://MonsterEnemy/02. Cultist Base.mp3"
+dest_files=["res://.godot/imported/02. Cultist Base.mp3-fd8df5d45ac9b9587e081728596f7860.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

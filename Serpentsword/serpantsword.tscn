@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://h8m2p3sjgexu"]
+
+[ext_resource type="Script" uid="uid://cpuk0qmpq1itf" path="res://Serpentsword/serpantswordscript.gd" id="1_eysqt"]
+[ext_resource type="PackedScene" uid="uid://cn134s2thlc8h" path="res://Serpentsword/scene.gltf" id="2_o5rkq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lpva1"]
+size = Vector3(0.8, 0.7, 0.8)
+
+[node name="Sword" type="Node3D"]
+script = ExtResource("1_eysqt")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.25, -0.2)
+shape = SubResource("BoxShape3D_lpva1")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_o5rkq")]
+transform = Transform3D(0.06, 0, 0, 0, 0.025, 0, 0, 0, 0.03, 0.0492263, 0, -0.000498862)
+
+[node name="Sketchfab_model" parent="Sketchfab_Scene" index="0"]
+transform = Transform3D(-0.995125, 0.056752, 0.0806568, 0.080633, -0.00271234, 0.99674, 0.0567858, 0.998385, -0.00187698, -0.00963831, 1.05473, 0.962201)
+
+[node name="pasted__pCylinder5_lambert1_0" parent="Sketchfab_Scene/Sketchfab_model/076af831d4ff4ab5bd112ae92547ba9c_fbx/RootNode/group/pasted__pCylinder5" index="0"]
+layers = 2
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+
+[editable path="Sketchfab_Scene"]
