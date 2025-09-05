@@ -78,11 +78,11 @@ var timeBeforeCanSlideAgainRef : float
 @onready var floorCheck = $Raycasts/FloorCheck
 @onready var mesh = $MeshInstance3D
 
+
 func _ready():
 	
-	$CameraHolder/Camera3D/SubViewportContainer/SubViewport/view_model_camera.translate(Vector3(0, 0, 5))
 	
-	$CameraHolder/Camera3D/SubViewportContainer/SubViewport.size = DisplayServer.window_get_size() #viewport size for weapons
+	#$CameraHolder/Camera3D/SubViewportContainer/SubViewport.size = DisplayServer.window_get_size() #viewport size for weapons
 	
 	#set the start move speed
 	currentSpeed = walkSpeed
@@ -112,7 +112,7 @@ func _process(_delta):
 		
 	
 func _physics_process(delta):
-	$CameraHolder/Camera3D/SubViewportContainer/SubViewport/view_model_camera.global_transform = $CameraHolder/Camera3D.global_transform
+	#$CameraHolder/Camera3D/SubViewportContainer/SubViewport/view_model_camera.global_transform = $CameraHolder/Camera3D.global_transform
 	#the behaviours that is preferable to check every "physics" frame
 	
 	applies(delta)
@@ -272,8 +272,8 @@ func applies(delta):
 			if slideTime <= 0: 
 				timeBeforeCanSlideAgain = timeBeforeCanSlideAgainRef
 				#go to crouch state if the ceiling is too low, otherwise go to run state 
-				if ceilingCheck.is_colliding(): crouchStateChanges()
-				else: runStateChanges()
+				#if ceilingCheck.is_colliding(): crouchStateChanges()
+				runStateChanges()
 				
 				
 		if timeBeforeCanSlideAgain > 0.0: timeBeforeCanSlideAgain -= delta 
@@ -433,4 +433,5 @@ func slideStateChanges():
 		timeBeforeCanSlideAgain = timeBeforeCanSlideAgainRef
 		if ceilingCheck.is_colliding(): crouchStateChanges()
 		else: runStateChanges()
+		
 		

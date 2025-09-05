@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c1x4bdj4l1nrc" path="res://Scripts/PlayerCharacter/PlayerCharacterScript.gd" id="1_5dbx1"]
 [ext_resource type="Script" uid="uid://duhfav8dwux3m" path="res://Scripts/PlayerCharacter/CameraScript.gd" id="2_x12n0"]
-[ext_resource type="PackedScene" uid="uid://203h702ktwtl" path="res://view_model/view_model_camera.tscn" id="3_1fu0j"]
+[ext_resource type="PackedScene" uid="uid://h8m2p3sjgexu" path="res://Serpentsword/serpantsword.tscn" id="4_4mq8h"]
 
 [sub_resource type="Curve" id="Curve_qvv7t"]
 _limits = [0.0, 100.0, 0.0, 1.0]
@@ -76,35 +76,16 @@ bobFrequency = 0.8
 bobAmplitude = 0.06
 camTiltRotationValue = 0.35
 camTiltRotationSpeed = 2.2
-shakeDuration = 0.35
-shakeFade = 6.0
 mouseInputSpeed = 2.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraHolder"]
-cull_mask = 1048573
 current = true
 fov = 100.0
 near = 0.01
 far = 1000.0
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="CameraHolder/Camera3D"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="CameraHolder/Camera3D/SubViewportContainer"]
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(320, 240)
-render_target_update_mode = 4
-
-[node name="view_model_camera" parent="CameraHolder/Camera3D/SubViewportContainer/SubViewport" instance=ExtResource("3_1fu0j")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.74555, 2.98105, 0)
-keep_aspect = 0
-cull_mask = 2
+[node name="Sword" parent="CameraHolder/Camera3D" instance=ExtResource("4_4mq8h")]
+transform = Transform3D(-0.573576, 0, 0.819152, 0, 1, 0, -0.819152, 0, -0.573576, 0.17397, -0.0937638, -0.114972)
 
 [node name="standingHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_5yjma")

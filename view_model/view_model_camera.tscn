@@ -1,9 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://203h702ktwtl"]
-
-[ext_resource type="PackedScene" uid="uid://h8m2p3sjgexu" path="res://Serpentsword/serpantsword.tscn" id="1_8217y"]
+[gd_scene format=3 uid="uid://bg02cl65ljkcm"]
 
 [node name="view_model_camera" type="Camera3D"]
 fov = 35.0
-
-[node name="Sword" parent="." instance=ExtResource("1_8217y")]
-transform = Transform3D(-0.273616, 0, 0.751754, 0, 0.8, 0, -0.751754, 0, -0.273616, 0.0322527, -0.110961, -0.178856)

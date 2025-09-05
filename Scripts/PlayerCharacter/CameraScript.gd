@@ -41,14 +41,14 @@ var addonFOV : float
 @export var camTiltRotationValue : float 
 @export var camTiltRotationSpeed : float
 
-#shake variables
-@export_group("camera shake variables")
-var shakeForce : float
-@export var shakeDuration : float
-var shakeDurationRef : float
-@export var shakeFade : float
-var rng = RandomNumberGenerator.new()
-var canCameraShake : bool = false
+##shake variables
+#@export_group("camera shake variables")
+#var shakeForce : float
+#@export var shakeDuration : float
+#var shakeDurationRef : float
+#@export var shakeFade : float
+#var rng = RandomNumberGenerator.new()
+#var canCameraShake : bool = false
 
 #input variables
 @export_group("input variables")
@@ -65,10 +65,9 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) #set mouse as captured
 	
 	lastFOV = baseFOV #get the base FOV at start
-	shakeDurationRef = shakeDuration
+	#shakeDurationRef = shakeDuration
 	
 func _unhandled_input(event):
-	#this function manage camera rotation (360 on x axis, blocked at <= -60 and >= 60 on y axis, to not having the character do a complete head turn, which will be kinda weird)
 	#if !pauseMenu.pauseMenuEnabled: #can only rotate when the ui is not opened
 		if event is InputEventMouseMotion:
 			rotate_y(-event.relative.x * XAxisSensibility)

@@ -1,30 +1,93 @@
-[gd_scene load_steps=4 format=3 uid="uid://h8m2p3sjgexu"]
+[gd_scene load_steps=8 format=3 uid="uid://h8m2p3sjgexu"]
 
 [ext_resource type="Script" uid="uid://cpuk0qmpq1itf" path="res://Serpentsword/serpantswordscript.gd" id="1_eysqt"]
-[ext_resource type="PackedScene" uid="uid://cn134s2thlc8h" path="res://Serpentsword/scene.gltf" id="2_o5rkq"]
+[ext_resource type="ArrayMesh" uid="uid://vapx3hsj0vgv" path="res://fantasysword/fantasyswordmesh.res" id="2_eysqt"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_lpva1"]
-size = Vector3(0.8, 0.7, 0.8)
+[sub_resource type="Animation" id="Animation_eysqt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fantasyswordmesh:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.0777899, -0.149728, -0.0353927)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Fantasyswordmesh:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2.34989e-10, 0.00268793, 3.14159)]
+}
 
-[node name="Sword" type="Node3D"]
+[sub_resource type="Animation" id="Animation_ru4i3"]
+resource_name = "slashbackward"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fantasyswordmesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.12164, 1.00058, 2.10696), Vector3(0, 0.00349066, 3.14159)]
+}
+
+[sub_resource type="Animation" id="Animation_o5rkq"]
+resource_name = "slashforward"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fantasyswordmesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2.34989e-10, 0.00268793, 3.14159), Vector3(0.12164, 1.00058, 2.10696)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ru4i3"]
+_data = {
+&"RESET": SubResource("Animation_eysqt"),
+&"slashbackward": SubResource("Animation_ru4i3"),
+&"slashforward": SubResource("Animation_o5rkq")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eysqt"]
+size = Vector3(1, 1, 1.5)
+
+[node name="Sword" type="Node3D" groups=["sword"]]
 script = ExtResource("1_eysqt")
 
-[node name="Area3D" type="Area3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.25, -0.2)
-shape = SubResource("BoxShape3D_lpva1")
-
-[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_o5rkq")]
-transform = Transform3D(0.06, 0, 0, 0, 0.025, 0, 0, 0, 0.03, 0.0492263, 0, -0.000498862)
-
-[node name="Sketchfab_model" parent="Sketchfab_Scene" index="0"]
-transform = Transform3D(-0.995125, 0.056752, 0.0806568, 0.080633, -0.00271234, 0.99674, 0.0567858, 0.998385, -0.00187698, -0.00963831, 1.05473, 0.962201)
-
-[node name="pasted__pCylinder5_lambert1_0" parent="Sketchfab_Scene/Sketchfab_model/076af831d4ff4ab5bd112ae92547ba9c_fbx/RootNode/group/pasted__pCylinder5" index="0"]
+[node name="Fantasyswordmesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.0839997, -2.12955e-07, 0.000225786, 2.12955e-07, -0.084, -1.97391e-11, 0.000225786, 5.52669e-10, 0.0839997, 0.0777899, -0.149728, -0.0353927)
 layers = 2
+mesh = ExtResource("2_eysqt")
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ru4i3")
+}
 
-[editable path="Sketchfab_Scene"]
+[node name="MeleeHitbox" type="Area3D" parent="." groups=["sword"]]
+transform = Transform3D(3.9345, 0, 0, 0, 3.9345, 0, 0, 0, 3.9345, 0, 0, 0)
+
+[node name="MeleeHitboxRange" type="CollisionShape3D" parent="MeleeHitbox"]
+transform = Transform3D(-2.60083e-08, 0, -0.595, 0, 0.595, 0, 0.595, 0, -2.60083e-08, 0.454946, 0, -0.198359)
+shape = SubResource("BoxShape3D_eysqt")
