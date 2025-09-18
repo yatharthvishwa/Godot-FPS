@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://cimmecyynkv3s"]
+
+[sub_resource type="Curve" id="Curve_qdcd5"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.758755, 0.989344), 0.0, 0.0, 0, 0, Vector2(1, 0.882787), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_k3yqo"]
+curve = SubResource("Curve_qdcd5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ato23"]
+particle_flag_align_y = true
+velocity_pivot = Vector3(8.27, 0, 0)
+direction = Vector3(1.61, 0.43, 0)
+initial_velocity_max = 17.2
+linear_accel_min = -2.23517e-06
+linear_accel_max = 53.97
+scale_curve = SubResource("CurveTexture_k3yqo")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tw27r"]
+albedo_color = Color(0.464933, 0.0796511, 0.0124429, 1)
+metallic_specular = 0.0
+emission = Color(0.325481, 0, 0.0261433, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_1wv8j"]
+material = SubResource("StandardMaterial3D_tw27r")
+radial_segments = 4
+rings = 1
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qdcd5"]
+particle_flag_align_y = true
+spread = 180.0
+initial_velocity_min = 7.7
+initial_velocity_max = 11.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k3yqo"]
+albedo_color = Color(0.477723, 0.039613, 0.0167661, 1)
+emission_enabled = true
+emission = Color(0.455701, 0.11374, 0, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ato23"]
+material = SubResource("StandardMaterial3D_k3yqo")
+top_radius = 0.1
+bottom_radius = 0.0
+
+[node name="explosion" type="Node3D"]
+
+[node name="debris" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 24
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_ato23")
+draw_pass_1 = SubResource("SphereMesh_1wv8j")
+
+[node name="blood" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 79
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_qdcd5")
+draw_pass_1 = SubResource("CylinderMesh_ato23")

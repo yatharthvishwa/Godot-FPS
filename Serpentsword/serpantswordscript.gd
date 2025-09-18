@@ -8,9 +8,6 @@ signal enemydeath()
 @onready var MeleeHitbox = $MeleeHitbox
 
 
-@onready var enemyanimationtree = $AnimationTree
-
-
 var damage = 10.0
 
 var can_slash = false

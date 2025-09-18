@@ -41,16 +41,8 @@ var addonFOV : float
 @export var camTiltRotationValue : float 
 @export var camTiltRotationSpeed : float
 
-##shake variables
-#@export_group("camera shake variables")
-#var shakeForce : float
-#@export var shakeDuration : float
-#var shakeDurationRef : float
-#@export var shakeFade : float
-#var rng = RandomNumberGenerator.new()
-#var canCameraShake : bool = false
 
-#input variables
+#input variable
 @export_group("input variables")
 var mouseInput : Vector2 
 @export var mouseInputSpeed : float 
@@ -59,14 +51,22 @@ var playCharInputDir : Vector2
 #references variables
 @onready var camera : Camera3D = $Camera3D
 @onready var playerChar : PlayerCharacter = $".."
-#@onready var pauseMenu : CanvasLayer = $"../PauseMenu"
+
+#shake vars
+@export var shake_strength: float = 0.2
+@export var shake_decay: float = 8.0
+var current_shake_decay: float = 0.0
+@export var random_strength: float = 1
+var shake_amount: float = 0.0
+var rng := RandomNumberGenerator.new()
+var original_position: Vector3
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) #set mouse as captured
-	
 	lastFOV = baseFOV #get the base FOV at start
 	#shakeDurationRef = shakeDuration
-	
+
+
 func _unhandled_input(event):
 	#if !pauseMenu.pauseMenuEnabled: #can only rotate when the ui is not opened
 		if event is InputEventMouseMotion:
@@ -76,9 +76,19 @@ func _unhandled_input(event):
 			mouseInput = event.relative #get position of the mouse in a 2D sceen, so save it in a Vector2 
 		
 func _process(delta):
+	
+	if shake_amount > 0.0:
+		var offset = Vector3(rng.randf_range(-1, 1), rng.randf_range(-1, 1),0.0) * shake_amount * random_strength
+		
+		position = original_position + offset
+		shake_amount = lerp(shake_amount, 0.0, shake_decay * delta)
+	else:
+		position = original_position
+
 	applies(delta)
 	
 	cameraBob(delta)
+	
 	
 	cameraTilt(delta)
 	
@@ -155,3 +165,11 @@ func FOVChange(delta):
 	#smoothly apply the FOV
 	#if playerChar.currentState == playerChar.states.DASH: camera.fov = lerp(camera.fov, targetFOV, fovChangeSpeedWhenDash * delta) #the dash state has it's own get-to-FOV speed, because the action is very quick and so the FOV change won't be seen with the regular get-to-FOV speed
 	camera.fov = lerp(camera.fov, targetFOV, fovChangeSpeed * delta)
+
+func shake_impact(strength: float = 1.0, decay: float = -1.0) -> void:
+	shake_amount = shake_strength * strength
+	
+	if decay > 0:
+		current_shake_decay = decay
+	else:
+		current_shake_decay = shake_decay

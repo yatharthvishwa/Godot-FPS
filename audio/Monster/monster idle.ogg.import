@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cb82umy7ap3p5"
+path="res://.godot/imported/monster idle.ogg-53b198d8e412931ab5dea9b19597f59b.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/Monster/monster idle.ogg"
+dest_files=["res://.godot/imported/monster idle.ogg-53b198d8e412931ab5dea9b19597f59b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

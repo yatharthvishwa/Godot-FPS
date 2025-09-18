@@ -1,33 +1,37 @@
-[gd_scene load_steps=23 format=3 uid="uid://cb4l4kl7fo3s4"]
+[gd_scene load_steps=33 format=4 uid="uid://cb4l4kl7fo3s4"]
 
 [ext_resource type="PackedScene" uid="uid://bwggrf7sbmkcv" path="res://Scenes/PlayerCharacterScene.tscn" id="1_bhx6w"]
 [ext_resource type="Shader" uid="uid://ptensb1opooj" path="res://Shader/ps1postprocess.gdshader" id="1_hye88"]
 [ext_resource type="Texture2D" uid="uid://ctwrwuewfji14" path="res://assets/skybox/AllSkyFree_Sky_DeepDusk_Equirect.png" id="1_wdpmp"]
 [ext_resource type="Texture2D" uid="uid://d2dylehruhuja" path="res://assets/PNG/Orange/texture_11.png" id="3_hphl3"]
+[ext_resource type="AudioStream" uid="uid://d00ujlpqu6s3c" path="res://audio/Sound Effects - Footsteps.ogg" id="4_2ahs6"]
 [ext_resource type="Texture2D" uid="uid://bkll7dtn7kp8" path="res://assets/textures/256x256/Stone/Stone_10-256x256.png" id="4_40f1b"]
 [ext_resource type="Texture2D" uid="uid://dwem23d56ajv8" path="res://assets/textures/256x256/Stone/Stone_18-256x256.png" id="5_1rqdr"]
 [ext_resource type="Shader" uid="uid://c1poyisnjfhum" path="res://Shader/modelps1.gdshader" id="6_t7y16"]
 [ext_resource type="Texture2D" uid="uid://bd5ujp5b3qn2f" path="res://assets/textures/256x256/Tile/Tile_10-256x256.png" id="7_hye88"]
 [ext_resource type="AudioStream" uid="uid://cjae0g8ww244w" path="res://02. Cultist Base.mp3" id="9_4yx5b"]
-[ext_resource type="PackedScene" uid="uid://dwglchq303teg" path="res://Enemy/enemy.tscn" id="10_wdpmp"]
+[ext_resource type="PackedScene" uid="uid://cjxdgmd0kc4bb" path="res://Enemy/Enemy/monster_enemy.tscn" id="10_e38of"]
+[ext_resource type="PackedScene" uid="uid://dwglchq303teg" path="res://Enemy/Monster.tscn" id="10_wdpmp"]
+[ext_resource type="Script" uid="uid://cwu5cf7a0awcd" path="res://addons/func_godot/src/map/func_godot_map.gd" id="12_pfqt4"]
+[ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="13_4iy87"]
+[ext_resource type="AudioStream" uid="uid://6gad3b57viv1" path="res://audio/Monster/ambience.ogg" id="13_xtit0"]
+[ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="14_qxulr"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_e38of"]
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_dlhop"]
 panorama = ExtResource("1_wdpmp")
 
-[sub_resource type="Sky" id="Sky_2ahs6"]
-sky_material = SubResource("PanoramaSkyMaterial_e38of")
-radiance_size = 0
+[sub_resource type="Sky" id="Sky_mlb78"]
+sky_material = SubResource("PanoramaSkyMaterial_dlhop")
 
-[sub_resource type="Environment" id="Environment_e38of"]
+[sub_resource type="Environment" id="Environment_pfqt4"]
 background_mode = 2
-sky = SubResource("Sky_2ahs6")
-ambient_light_source = 2
-ambient_light_color = Color(0.78477, 0.0690236, 1.92523e-07, 1)
-tonemap_mode = 3
+sky = SubResource("Sky_mlb78")
+ambient_light_source = 3
+ambient_light_color = Color(0.460157, 0.00673487, 4.81308e-08, 1)
 fog_enabled = true
-fog_light_color = Color(0.666347, 0.144726, 0.212494, 1)
-fog_light_energy = 0.3
-fog_sky_affect = 0.165
+fog_light_color = Color(0.625546, 0, 0.156509, 1)
+fog_light_energy = 0.16
+fog_sky_affect = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wdpmp"]
 shader = ExtResource("1_hye88")
@@ -76,14 +80,44 @@ texture_filter = 2
 [sub_resource type="BoxMesh" id="BoxMesh_hphl3"]
 size = Vector3(1000, 1, 1000)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_72b4g"]
+albedo_texture = ExtResource("14_qxulr")
+metallic_specular = 0.0
+texture_filter = 2
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_nfv83"]
+_surfaces = [{
+"aabb": AABB(-2.00012, -0.500122, -2.00012, 4.00012, 1.00012, 4.00012),
+"attribute_data": PackedByteArray("AACAvwAAgL4AAoA/AACAvgACgD8ACIA+AACAvwAIgD4AAIA/AAiAPgACgL8ACIA+AAKAvwAAgL4AAIA/AACAvgAAgL8AAoA/AACAvwAAgL8AAoA/AACAvwACgD8AAoA/AACAPwACgD8AAoC/AAKAPwACgL8AAIC/AACAPwAAgL8AAIC/AACAvgACgD8AAIC+AAKAPwAIgD4AAIC/AAiAPgAAgD8ACIA+AAKAvwAIgD4AAoC/AACAvgAAgD8AAIC+"),
+"format": 34359742487,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAACAAMABAAFAAYABAAGAAcACAAJAAoACAAKAAsADAANAA4ADAAOAA8AEAARABIAEAASABMAFAAVABYAFAAWABcA"),
+"material": SubResource("StandardMaterial3D_72b4g"),
+"name": "__TB_empty",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 24,
+"vertex_data": PackedByteArray("AAAAQAAAAD8AAADAAAIAwAAAAD8AAADAAAIAwAAIAL8AAADAAAAAQAAIAL8AAADAAAAAwAAIAL8AAABAAAAAwAAIAL8AAgDAAAAAwAAAAD8AAgDAAAAAwAAAAD8AAABAAAIAwAAAAL8AAABAAAAAQAAAAL8AAABAAAAAQAAAAL8AAgDAAAIAwAAAAL8AAgDAAAIAwAAAAD8AAABAAAIAwAAAAD8AAgDAAAAAQAAAAD8AAgDAAAAAQAAAAD8AAABAAAAAQAAAAD8AAABAAAAAQAAAAD8AAgDAAAAAQAAIAL8AAgDAAAAAQAAIAL8AAABAAAAAQAAIAL8AAABAAAIAwAAIAL8AAABAAAIAwAAAAD8AAABAAAAAQAAAAD8AAABA/////wAA/7//////AAD/v/////8AAP+//////wAA/78AAP9//3//vwAA/3//f/+/AAD/f/9//78AAP9//3//v/9/AAD//////38AAP//////fwAA//////9/AAD//////3////9//7//f////3//v/9/////f/+//3////9//7////9//////////3//////////f/////////9///////9//3////+//3//f////7//f/9/////v/9//3////+/")
+}]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_jv387"]
+points = PackedVector3Array(2, 0.5, 2, 2, -0.5, 2, -2, 0.5, 2, -2, -0.5, 2, 2, 0.5, -2, 2, -0.5, -2, -2, 0.5, -2, -2, -0.5, -2)
+
+[sub_resource type="LabelSettings" id="LabelSettings_e38of"]
+font_size = 8
+
 [node name="world" type="Node3D"]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_e38of")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0.46371, -0.508539, 0.725507, -0.187021, 0.744235, 0.641201, 0, 4.10726, 0)
+light_color = Color(0.867348, 0.499117, 0.525927, 1)
+light_energy = 3.404
+light_angular_distance = 77.75
+light_specular = 0.0
 shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_pfqt4")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
 material = SubResource("ShaderMaterial_wdpmp")
@@ -95,11 +129,83 @@ grow_vertical = 2
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(320, 240)
+audio_listener_enable_2d = true
+audio_listener_enable_3d = true
+size = Vector2i(640, 480)
 render_target_update_mode = 4
 
 [node name="PlayerCharacter" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_bhx6w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5722, 63.076, 8.64972)
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 29.5062, 67.6169, 18.0147)
+
+[node name="Skeleton3D" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature" index="0"]
+bones/2/rotation = Quaternion(0.568294, 0.630358, -0.421665, -0.319202)
+bones/3/rotation = Quaternion(0.398941, -0.0758835, -0.09772, 0.908591)
+bones/4/rotation = Quaternion(0.706723, 0.0768009, -0.0119254, 0.703208)
+bones/5/rotation = Quaternion(4.87204e-08, 2.36016e-08, 0.316393, 0.948628)
+bones/6/rotation = Quaternion(0.0904322, 0.00536959, 0.261864, 0.960844)
+bones/7/rotation = Quaternion(-0.455534, 0.034884, 0.805229, -0.377993)
+bones/8/rotation = Quaternion(-1.34019e-07, -0.140901, -2.7289e-07, 0.990024)
+bones/9/rotation = Quaternion(1.20738e-07, -0.256289, 1.41475e-07, 0.9666)
+bones/10/rotation = Quaternion(0.461306, -0.525715, -0.510338, 0.500375)
+bones/11/rotation = Quaternion(0.657534, -0.00436286, 0.00609184, 0.753388)
+bones/12/rotation = Quaternion(0.567047, -0.00934189, 0.00530953, 0.823616)
+bones/13/rotation = Quaternion(0.463882, -0.456968, -0.527383, 0.545766)
+bones/14/rotation = Quaternion(0.581412, -3.48447e-07, -9.51099e-07, 0.813609)
+bones/15/rotation = Quaternion(0.522498, 8.01267e-07, -8.61142e-09, 0.85264)
+bones/16/rotation = Quaternion(0.381635, -0.474394, -0.498862, 0.6168)
+bones/17/rotation = Quaternion(0.600421, -1.99337e-08, -6.98343e-07, 0.799684)
+bones/18/rotation = Quaternion(0.562083, 2.65393e-07, -7.32837e-08, 0.827081)
+bones/20/rotation = Quaternion(0.368121, -2.97464e-07, -1.04474e-07, 0.929778)
+bones/21/rotation = Quaternion(0.460974, -1.06937e-07, -2.53771e-07, 0.887414)
+bones/22/position = Vector3(-3.96987, -1.26141, 6.88207)
+bones/22/rotation = Quaternion(0.330002, -0.405136, 0.676854, 0.51849)
+bones/24/rotation = Quaternion(0.382286, 0.281932, 0.0302779, 0.879463)
+bones/25/rotation = Quaternion(0.706727, -0.0768018, 0.0119259, 0.703204)
+bones/26/rotation = Quaternion(0.154843, -0.0520552, -0.014311, 0.986463)
+bones/27/rotation = Quaternion(0.45739, 0.038851, 0.805046, 0.375746)
+bones/28/rotation = Quaternion(0.00492693, 6.27209e-07, 6.83728e-07, 0.999988)
+bones/29/rotation = Quaternion(0.00492581, 6.01541e-09, 1.55189e-07, 0.999988)
+bones/30/rotation = Quaternion(0.0441848, -0.0271701, 0.798787, 0.599374)
+bones/31/rotation = Quaternion(0.195989, 0.0068166, -0.00311646, 0.980577)
+bones/32/rotation = Quaternion(0.0825603, 0.010744, 3.9057e-05, 0.996528)
+bones/33/rotation = Quaternion(0.0649821, 0.0895491, 0.728615, 0.675928)
+bones/34/rotation = Quaternion(0.185483, -2.88425e-07, 7.22471e-09, 0.982647)
+bones/35/rotation = Quaternion(0.185484, 1.31464e-06, -8.68973e-07, 0.982647)
+bones/36/rotation = Quaternion(-0.00967211, 0.131937, 0.675651, 0.725255)
+bones/37/rotation = Quaternion(0.277139, 3.822e-06, -1.54826e-06, 0.96083)
+bones/38/rotation = Quaternion(0.231561, -1.54365e-06, 4.88371e-06, 0.97282)
+bones/39/rotation = Quaternion(-0.00349555, 0.215589, 0.568458, 0.793955)
+bones/40/rotation = Quaternion(0.299697, 6.51863e-07, -3.30688e-07, 0.954034)
+bones/41/rotation = Quaternion(0.131204, -1.13443e-07, -8.72774e-07, 0.991355)
+
+[node name="Arms" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D" index="0"]
+cast_shadow = 0
+
+[node name="BoneAttachment3D" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D" index="1"]
+transform = Transform3D(-0.639746, -0.592285, 0.489819, 0.203137, 0.484338, 0.850971, -0.741256, 0.643906, -0.189538, -33.9437, 23.806, -43.6073)
+
+[node name="MeshInstance3D" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="3"]
+cast_shadow = 0
+
+[node name="walk" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="5"]
+volume_db = -17.564
+pitch_scale = 0.77
+
+[node name="run" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="7"]
+volume_db = -4.622
+
+[node name="slide" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="8"]
+volume_db = -2.443
+
+[node name="walk2" type="AudioStreamPlayer" parent="SubViewportContainer/SubViewport/PlayerCharacter"]
+unique_name_in_owner = true
+stream = ExtResource("4_2ahs6")
+volume_db = -17.564
+pitch_scale = 0.77
+
+[node name="OmniLight3D" type="OmniLight3D" parent="SubViewportContainer/SubViewport/PlayerCharacter"]
+light_color = Color(0.969175, 0.378427, 0.3554, 1)
+light_specular = 1.2
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.0294, 6.47603, 20.215)
@@ -165,49 +271,66 @@ skeleton = NodePath("../../../..")
 transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -19.1242, 49.026, 12.2265)
 player_path = NodePath("../../PlayerCharacter")
 
-[node name="Enemy3" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_wdpmp")]
-transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -47.1242, 37.8291, 12.2265)
-player_path = NodePath("../../PlayerCharacter")
+[node name="MonsterEnemy" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.84, 0.59755, -5.51405)
 
-[node name="Enemy4" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_wdpmp")]
-transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -47.1242, 0.50293, -20.7735)
-player_path = NodePath("../../PlayerCharacter")
+[node name="MonsterEnemy4" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.64265, 56.3241, 8.40691)
 
-[node name="Enemy5" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_wdpmp")]
-transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -47.1242, 0.50293, -4.7735)
-player_path = NodePath("../../PlayerCharacter")
+[node name="MonsterEnemy5" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3673, 49.0402, 29.3759)
 
-[node name="Enemy6" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_wdpmp")]
-transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -71.1242, 0.50293, -4.7735)
-player_path = NodePath("../../PlayerCharacter")
+[node name="MonsterEnemy6" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6625, 39.082, 21.003)
 
-[node name="Enemy8" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_wdpmp")]
-transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -96.3242, 0.50293, 10.4785)
-player_path = NodePath("../../PlayerCharacter")
+[node name="MonsterEnemy7" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.6625, 30.1806, 19.6982)
 
-[node name="Enemy7" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_wdpmp")]
-transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -27.1242, 0.50293, -4.7735)
-player_path = NodePath("../../PlayerCharacter")
+[node name="MonsterEnemy8" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.6625, 18.6141, 19.6982)
 
-[node name="Enemy2" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_wdpmp")]
-transform = Transform3D(2.52, 0, 0, 0, 2.52, 0, 0, 0, 2.52, -21.9941, 16.13, 12.2265)
-player_path = NodePath("../../PlayerCharacter")
+[node name="MonsterEnemy9" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -118.42, 7.7041, 19.6982)
+
+[node name="MonsterEnemy2" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.17559, 0.59755, -35.762)
+
+[node name="MonsterEnemy3" parent="SubViewportContainer/SubViewport/NavigationRegion3D" instance=ExtResource("10_e38of")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.9537, 0.59755, -3.07258)
+
+[node name="FuncGodotMap" type="Node3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.694, 0)
+script = ExtResource("12_pfqt4")
+local_map_file = "uid://dhe1simltjtq8"
+map_settings = ExtResource("13_4iy87")
+metadata/_custom_type_script = "uid://cwu5cf7a0awcd"
+
+[node name="entity_0_worldspawn" type="StaticBody3D" parent="SubViewportContainer/SubViewport/FuncGodotMap"]
+collision_mask = 0
+
+[node name="entity_0_mesh_instance" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/FuncGodotMap/entity_0_worldspawn"]
+mesh = SubResource("ArrayMesh_nfv83")
+
+[node name="entity_0_brush_0_collision_shape" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/FuncGodotMap/entity_0_worldspawn"]
+shape = SubResource("ConvexPolygonShape3D_jv387")
+
+[node name="Label" type="Label" parent="SubViewportContainer"]
+layout_mode = 2
+text = "There is sound in this game try unmuting your tab!
+upper right and open in another tab
+press shift to toggle sprint
+use ctrl while sprinting to slide
+press space to jump/ double jump
+"
+label_settings = SubResource("LabelSettings_e38of")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_4yx5b")
-volume_db = -7.042
+volume_db = -10.39
 autoplay = true
 
-[node name="Label" type="Label" parent="."]
-visible = false
-top_level = true
-offset_right = 263.0
-offset_bottom = 75.0
-scale = Vector2(0.46, 0.46)
-text = "press shift to toggle sprint
-use ctrl while sprinting to slide
-press space to jump/ double jump"
-
-[connection signal="enemydeath" from="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/Sword" to="SubViewportContainer/SubViewport/NavigationRegion3D/Enemy" method="_on_sword_enemydeath"]
+[node name="ambience" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_xtit0")
 
 [editable path="SubViewportContainer/SubViewport/PlayerCharacter"]
+[editable path="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig"]

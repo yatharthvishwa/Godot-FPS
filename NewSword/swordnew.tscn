@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://62tnixjl6twp"]
+
+[ext_resource type="ArrayMesh" uid="uid://vapx3hsj0vgv" path="res://fantasysword/fantasyswordmesh.res" id="1_4knmt"]
+[ext_resource type="Script" uid="uid://bufyuru123w5" path="res://NewSword/swordnew.gd" id="1_7t83u"]
+
+[node name="Sword" type="Node3D"]
+script = ExtResource("1_7t83u")
+
+[node name="swordcollider" type="RayCast3D" parent="."]
+target_position = Vector3(0, 1.055, 0)
+collision_mask = 4
+debug_shape_custom_color = Color(1.92523e-07, 0.931886, 0.768413, 1)
+
+[node name="Fantasyswordmesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.217796, 1.90403e-08, 0, -1.90403e-08, -0.217796, 0, 0, 0, 0.217796, 0, 0, 0)
+cast_shadow = 0
+mesh = ExtResource("1_4knmt")

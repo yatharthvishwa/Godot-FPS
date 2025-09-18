@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkxpa7wy52qab"]
+
+[ext_resource type="Script" uid="uid://bd4hqhkvx88r3" path="res://Enemy/Enemy/enemy.gd" id="1_4xu2o"]
+
+[node name="Enemy" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 15
+script = ExtResource("1_4xu2o")
+
+[node name="enemyhitbox" type="CollisionShape3D" parent="."]
+
+[node name="Timer" type="Node" parent="."]
+
+[node name="AttackTimer" type="Timer" parent="Timer"]
+autostart = true

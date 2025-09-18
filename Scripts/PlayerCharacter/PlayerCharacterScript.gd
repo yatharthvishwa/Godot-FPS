@@ -3,12 +3,26 @@ extends CharacterBody3D
 #class name
 class_name PlayerCharacter
 
+@onready var animation_state_machine = $CameraHolder/Camera3D/FirstpersonRig/PlayerAnimationTree.get("parameters/AnimationStateMachine/playback")
+
 #states variables
 enum states
 {
-	IDLE, WALK, RUN, CROUCH, SLIDE, JUMP, INAIR, ONWALL, DASH, GRAPPLE
+	IDLE, WALK, RUN, CROUCH, SLIDE, JUMP, INAIR, ONWALL, DASH, GRAPPLE, LANDING
 }
 var currentState 
+
+var landing_timer : float = 0.3
+var landing_duration: float = 0.3
+
+#audio ref
+@onready var walk = $walk
+@onready var run = $run
+@onready var slide = $slide
+@onready var falling = $falling
+@onready var jump_audio = $jump
+
+
 
 #move variables
 @export_group("move variables")
@@ -77,6 +91,7 @@ var timeBeforeCanSlideAgainRef : float
 @onready var ceilingCheck = $Raycasts/CeilingCheck
 @onready var floorCheck = $Raycasts/FloorCheck
 @onready var mesh = $MeshInstance3D
+@onready var player_animation_tree = $CameraHolder/Camera3D/FirstpersonRig/PlayerAnimationTree
 
 
 func _ready():
@@ -108,17 +123,28 @@ func _ready():
 func _process(_delta):
 	#the behaviours that is preferable to check every "visual" frame
 	
-		inputManagement()
-		
+	slidekill()
+	
+	inputManagement()
+	
 	
 func _physics_process(delta):
 	#$CameraHolder/Camera3D/SubViewportContainer/SubViewport/view_model_camera.global_transform = $CameraHolder/Camera3D.global_transform
 	#the behaviours that is preferable to check every "physics" frame
-	
+	# normal movement input only if not dashing
+
 	applies(delta)
 	
 	move(delta)
 	
+	animationchange()
+	
+	attack()
+	
+	
+	audiochanges()
+	
+	checklanding(delta)
 	
 	move_and_slide()
 
@@ -241,7 +267,7 @@ func applies(delta):
 		
 		if inputDirection != Vector2.ZERO and moveDirection != Vector3.ZERO:
 			match currentSpeed:
-				crouchSpeed: currentState = states.CROUCH 
+				crouchSpeed:currentState = states.CROUCH 
 				walkSpeed: currentState = states.WALK
 				runSpeed: currentState = states.RUN 
 				slideSpeed: currentState = states.SLIDE 
@@ -434,4 +460,244 @@ func slideStateChanges():
 		if ceilingCheck.is_colliding(): crouchStateChanges()
 		else: runStateChanges()
 		
+
+@onready var slidespeedlines = $slidespeedlines
+
+func animationchange():
+	if currentState == states.IDLE:
+		slidespeedlines.visible = false
+		animation_state_machine.travel('Idle')
+	if currentState == states.WALK:
+		slidespeedlines.visible = false
+		animation_state_machine.travel('Walk')
+	if currentState == states.RUN:
+		slidespeedlines.visible = false
+		animation_state_machine.travel('Run')
+	if currentState == states.SLIDE:
+		slidespeedlines.visible = true
+		animation_state_machine.travel('Idle')
+	if currentState == states.INAIR:
+		slidespeedlines.visible = false
+		animation_state_machine.travel('Fall')
+	if currentState == states.LANDING:
+		slidespeedlines.visible = false
+		%CameraHolder.shake_impact(0.25)
+		animation_state_machine.travel('Jumpend')
+	if currentState == states.JUMP :
+		slidespeedlines.visible = false
+		animation_state_machine.travel('Jumpstart')
+		#camera_animation_player.play("Camerajump", 0)
+	
+
+var jumpaudioplayed = false
+var slideaudioplayed= false
+func audiochanges():
+	if currentState == states.IDLE:
+		jumpaudioplayed = false
+		slideaudioplayed= false
+		if jumpaudioplayed:
+			jump_audio.stop()
+		if falling.playing:
+			falling.stop()
+		if walk.playing:
+			walk.stop()
+		if run.playing:
+			run.stop()
+	elif currentState == states.WALK:
+		jumpaudioplayed = false
+		slideaudioplayed= false
+		if jumpaudioplayed:
+			jump_audio.stop()
+		if falling.playing:
+			falling.stop()
+		if !walk.playing:
+			walk.pitch_scale = randf_range(0.8,1.2)
+			walk.play()
+		if run.playing:
+			run.stop()
+	elif currentState == states.RUN:
+		jumpaudioplayed = false
+		slideaudioplayed= false
+		if jumpaudioplayed:
+			jump_audio.stop()
+		if falling.playing:
+			falling.stop()
+		if !run.playing:
+			run.play()
+		if walk.playing:
+			walk.stop()
+	elif currentState == states.SLIDE and is_on_floor():
+		jumpaudioplayed = false
+		if jumpaudioplayed:
+			jump_audio.stop()
+		if falling.playing:
+			falling.stop()
+		if !slideaudioplayed:
+			slide.play()
+			slideaudioplayed = true
+		if run.playing:
+			run.stop()
+		if walk.playing:
+			walk.stop()
+	elif currentState == states.INAIR:
+		jumpaudioplayed = false
+		slideaudioplayed= false
+		if jumpaudioplayed:
+			jump_audio.stop()
+		if !falling.playing:
+			falling.play()
+		if slide.playing:
+			slide.stop()
+		if run.playing:
+			run.stop()
+		if walk.playing:
+			walk.stop()
+	elif currentState == states.JUMP:
+		if !jumpaudioplayed:
+			jump_audio.play()
+			jumpaudioplayed = true
+		if falling.playing:
+			falling.stop()
+		if slide.playing:
+			slide.stop()
+		if run.playing:
+			run.stop()
+		if walk.playing:
+			walk.stop()
+	else:
+		jumpaudioplayed = false
+		slideaudioplayed= false
+		if jumpaudioplayed:
+			jump_audio.stop()
+		if falling.playing:
+			falling.stop()
+		if slide.playing:
+			slide.stop()
+		if run.playing:
+			run.stop()
+		if walk.playing:
+			walk.stop()
+
+
+
+func can_damage(value: bool):
+	$CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew.can_damage = value
+	
+	
+func checklanding(delta):
+	var was_in_air = currentState == states.INAIR
+	
+	
+	if was_in_air and is_on_floor():
+		currentState = states.LANDING
+		landing_timer = 0.0
+	if currentState == states.LANDING:
+		landing_timer += delta
+		if landing_timer >= landing_duration:
+			if velocity.x == 0:
+				currentState = states.IDLE
+			else:
+				currentState = states.WALK
+
+var attacking = false
+var attackcycle = 0
+
+@onready var attack_state_machine = $CameraHolder/Camera3D/FirstpersonRig/PlayerAnimationTree.get("parameters/AttackStateMachine/playback")
+
+func attack():
+	if Input.is_action_just_pressed("shoot") and !attacking:
+		player_animation_tree.set("parameters/AttackOneShot/request",true)
+		if attackcycle == 0:
+			attack_state_machine.travel('Attack1')
+			attackcycle = 1
+			
+		elif %SecondAttackTimer.time_left and attackcycle == 1:
+			attack_state_machine.travel('Attack2')
+			attackcycle = 0
+		else:
+			attackcycle = 0
+
+func attack_toggle(value : bool): #changes the attacking variable to true when attack 1 animation is playing
+	attacking = value
+
+
+@onready var swordcollider = $swordcollider
+
+func hit():
+	var collider_in_swordcollider = swordcollider.get_collider()
+	if collider_in_swordcollider and 'hit' in collider_in_swordcollider:
+		swordcollider.hit()
+		#print("slidekill")
+		#%CameraHolder.shake_impact(5.0)
+
+func slidekill():
+	if currentState == states.SLIDE:
+		var slidecollider = %slidekill.get_collider()
+		if slidecollider and 'slidekilled' in slidecollider:
+			slidecollider.slidekilled()
+			print("slidekill")
+			%CameraHolder.shake_impact(15.0,20.0)
+
+
+@onready var dashkillray = $CameraHolder/Camera3D/dashkill
+
+var is_dashing = false
+var dash_speed = 50.0
+var dash_duration = 0.15
+var original_position
+@onready var monster_enemy = $"."
+@onready var dashkillaudio = $dashkill
+@onready var speedlines = $speedlines
+@onready var dashaudio = $dash
+
+
+func dashkill():
+	if is_dashing:  # Prevent multiple dashes at once
+		return
 		
+	var dashkillcollider = dashkillray.get_collider()
+	print(dashkillcollider)
+	if dashkillcollider and 'dashkilled' in dashkillcollider:
+		# Start the dash sequence
+		start_dash_to_enemy(dashkillcollider)
+	#else:start_dash_to_enemy(dashkill collider) #i added this
+
+func start_dash_to_enemy(enemy):
+	is_dashing = true
+	original_position = global_position
+	
+	# Calculate dash target (slightly in front of enemy to avoid clipping)
+	var enemy_position = enemy.global_position
+	var dash_direction = (enemy_position - global_position).normalized()
+	var dash_target = enemy_position - dash_direction * 1.5                        # Stop 1.5 units before enemy
+	
+	dashaudio.pitch_scale = randf_range(0.8,1.2)
+	dashaudio.play()
+	player_animation_tree.set("parameters/AttackOneShot/request",true)
+	attack_state_machine.travel('Attack2')
+	
+	# Create dash tween
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_IN)
+	tween.set_trans(Tween.TRANS_QUART)
+	
+	# Dash to enemy
+	tween.tween_property(self, "global_position", dash_target, dash_duration)
+	%CameraHolder.shake_impact(5.0,dash_duration)
+	speedlines.visible = true
+	
+	# When dash completes, execute the kill
+	tween.tween_callback(execute_kill.bind(enemy))
+	
+func execute_kill(enemy):
+	# Kill the enemy
+	enemy.dashkilled()
+	dashkillaudio.play()
+	
+	# Wait for animation to finish before allowing next dash
+	
+	is_dashing = false
+	speedlines.visible = false
+func _input(event):
+	if event.is_action_pressed("dash_kill") and (currentState == states.INAIR or currentState == states.JUMP): # add "dash_kill" in Input Map
+		dashkill()
