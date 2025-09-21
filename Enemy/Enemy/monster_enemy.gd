@@ -14,8 +14,8 @@ func _on_attack_timer_timeout():
 
 func punch_attack_animation():
 	$AnimationTree.set("parameters/PunchOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-func hit():
 
+func hit():
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
 	#$AnimationTree.active = false
@@ -57,6 +57,19 @@ func dashkilled():
 	#$AnimationTree.active = false
 	enemyhitbox.disabled = true
 	slidekillaudio.play()
+	debris.emitting = true
+	blood.emitting = true
+	runaudio.stop()
+	enemymesh.visible = false
+	footstepsaudio.stop()
+	set_physics_process(false)
+	set_process(false)
+	dashkillcollision_shape_3d.disabled = true
+	
+func slamkilled():
+	move_state_machine.travel('Death')
+	velocity = Vector3.ZERO
+	enemyhitbox.disabled = true
 	debris.emitting = true
 	blood.emitting = true
 	runaudio.stop()

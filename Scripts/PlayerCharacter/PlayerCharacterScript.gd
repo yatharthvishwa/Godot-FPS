@@ -132,7 +132,9 @@ func _physics_process(delta):
 	#$CameraHolder/Camera3D/SubViewportContainer/SubViewport/view_model_camera.global_transform = $CameraHolder/Camera3D.global_transform
 	#the behaviours that is preferable to check every "physics" frame
 	# normal movement input only if not dashing
-
+	
+	applyslam(delta)
+	
 	applies(delta)
 	
 	move(delta)
@@ -621,14 +623,15 @@ func attack_toggle(value : bool): #changes the attacking variable to true when a
 	attacking = value
 
 
-@onready var swordcollider = $swordcollider
+#@onready var swordcollider = $swordcollider
+#@onready var hitsound = $hitsound
 
-func hit():
-	var collider_in_swordcollider = swordcollider.get_collider()
-	if collider_in_swordcollider and 'hit' in collider_in_swordcollider:
-		swordcollider.hit()
-		#print("slidekill")
-		#%CameraHolder.shake_impact(5.0)
+#func callhit():
+	#var collider_in_swordcollider = swordcollider.get_collider()
+	#if collider_in_swordcollider and collider_in_swordcollider.has_method("hit"):
+		#swordcollider.hit()
+		#print(collider_in_swordcollider)
+		#hitsound.play()
 
 func slidekill():
 	if currentState == states.SLIDE:
@@ -701,3 +704,60 @@ func execute_kill(enemy):
 func _input(event):
 	if event.is_action_pressed("dash_kill") and (currentState == states.INAIR or currentState == states.JUMP): # add "dash_kill" in Input Map
 		dashkill()
+	if event.is_action_pressed("groundslam")  and (currentState == states.INAIR or currentState == states.JUMP) :
+		slam()
+
+var slamming = false
+var slam_jump_force = 400.0   # how high you pop up
+var slam_gravity = 600.0       # downward acceleration
+var slam_down_boost = -200.0   # instant downward pull when switching phases
+
+var slam_phase = "none"
+
+func slam():
+	if not slamming:
+		slamming = true
+		slam_phase = "up"
+		velocity.y = slam_jump_force  # go upward a bit
+		speedlines.visible = false
+
+@onready var slamlines = $slamlines
+@onready var groundslamaudio = $groundslamaudio
+
+
+func applyslam(delta):
+	var damage_radius = 10.0
+	if slamming:
+		if slam_phase == "up":
+			speedlines.visible = false
+			# let character rise naturally with normal gravity
+			#velocity.y += 10.0 * delta
+			
+			# when upward motion ends -> switch to slam
+			if velocity.y >= 0:
+				slam_phase = "down"
+				velocity.y += slam_down_boost  # snap downward
+				#slamlines.visible = false
+		
+		elif slam_phase == "down":
+			# apply extra-strong gravity
+			velocity.y -= slam_gravity * delta
+			speedlines.visible = true
+			
+			if is_on_floor():
+				_on_slam_impact()
+				groundslamaudio.play()
+
+func _on_slam_impact():
+	var damage_radius = 10.0
+	slamming = false
+	slam_phase = "none"
+	speedlines.visible = false
+	%CameraHolder.shake_impact(15.0,20.0)
+	print('notinloop')
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		print("detecting enemies")
+		if position.distance_to(enemy.position) <= damage_radius:
+			print("radius")
+			if enemy.has_method("slamkilled"):
+				enemy.slamkilled()
