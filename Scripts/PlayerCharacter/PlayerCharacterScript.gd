@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-#class name
+#class name #DO NOT REMOVE THIS COMMENT, IT MAKES THE ENTIRE GAME CRASH
 class_name PlayerCharacter
 
 @onready var animation_state_machine = $CameraHolder/Camera3D/FirstpersonRig/PlayerAnimationTree.get("parameters/AnimationStateMachine/playback")
@@ -8,7 +8,7 @@ class_name PlayerCharacter
 #states variables
 enum states
 {
-	IDLE, WALK, RUN, CROUCH, SLIDE, JUMP, INAIR, ONWALL, DASH, GRAPPLE, LANDING
+	IDLE, WALK, RUN, CROUCH, SLIDE, JUMP, INAIR, LANDING
 }
 var currentState 
 
@@ -21,8 +21,6 @@ var landing_duration: float = 0.3
 @onready var slide = $slide
 @onready var falling = $falling
 @onready var jump_audio = $jump
-
-
 
 #move variables
 @export_group("move variables")
@@ -74,7 +72,7 @@ var nbJumpsInAirAllowedRef : int
 @export var slideTimeRef : float 
 var slideVector : Vector2 = Vector2.ZERO #slide direction
 var startSlideInAir : bool
-@export var timeBeforeCanSlideAgain : float
+@export var timeBeforeCanSlideAgain : float 
 var timeBeforeCanSlideAgainRef : float 
 @export var maxSlopeAngle : float #max angle value where the side time duration is applied
 
@@ -96,8 +94,6 @@ var timeBeforeCanSlideAgainRef : float
 
 func _ready():
 	
-	
-	#$CameraHolder/Camera3D/SubViewportContainer/SubViewport.size = DisplayServer.window_get_size() #viewport size for weapons
 	
 	#set the start move speed
 	currentSpeed = walkSpeed
@@ -129,9 +125,6 @@ func _process(_delta):
 	
 	
 func _physics_process(delta):
-	#$CameraHolder/Camera3D/SubViewportContainer/SubViewport/view_model_camera.global_transform = $CameraHolder/Camera3D.global_transform
-	#the behaviours that is preferable to check every "physics" frame
-	# normal movement input only if not dashing
 	
 	applyslam(delta)
 	
@@ -230,28 +223,26 @@ func inputManagement():
 					
 					
 func applies(delta):
-	#general appliements
+	#handles movement cases based on floor
 	
 	floorAngle = get_floor_normal() #get the angle of the floor
 	
 	if !is_on_floor():
 		#modify the type of gravity to apply to the character, depending of his velocity (when jumping jump gravity, otherwise fall gravity)
 		if velocity.y >= 0.0:
-				if currentState != states.GRAPPLE: velocity.y += jumpGravity * delta
-				if currentState != states.SLIDE and currentState != states.DASH and currentState != states.GRAPPLE: currentState = states.JUMP
+				velocity.y += jumpGravity * delta
+				if currentState != states.SLIDE : currentState = states.JUMP
 		else: 
-			if currentState != states.GRAPPLE: velocity.y += fallGravity * delta
-			if currentState != states.SLIDE and currentState != states.DASH and currentState != states.GRAPPLE: currentState = states.INAIR 
+			velocity.y += fallGravity * delta
+			if currentState != states.SLIDE : currentState = states.INAIR 
 			
 		if currentState == states.SLIDE:
 			if !startSlideInAir: 
 				slideTime = -1 #if the character start slide on the grund, and the jump, the slide is canceled
 				
-		#if currentState == states.DASH: velocity.y = 0.0 #set the y axis velocity to 0, to allow the character to not be affected by gravity while dashing
 		
 		if hitGroundCooldown != hitGroundCooldownRef: hitGroundCooldown = hitGroundCooldownRef #reset the before bunny hopping value
 		
-		#if coyoteJumpCooldown > 0.0: coyoteJumpCooldown -= delta
 		
 	if is_on_floor():
 		slopeAngle = rad_to_deg(acos(floorAngle.dot(Vector3.UP))) #get the angle of the slope 
@@ -265,15 +256,12 @@ func applies(delta):
 		
 		
 		#set the move state depending on the move speed, only when the character is moving
-		
-		
 		if inputDirection != Vector2.ZERO and moveDirection != Vector3.ZERO:
 			match currentSpeed:
 				crouchSpeed:currentState = states.CROUCH 
 				walkSpeed: currentState = states.WALK
 				runSpeed: currentState = states.RUN 
-				slideSpeed: currentState = states.SLIDE 
-				dashSpeed: currentState = states.DASH 
+				slideSpeed: currentState = states.SLIDE
 				
 		else:
 			#set the state to idle
@@ -354,12 +342,12 @@ func move(delta):
 	if !is_on_floor():
 		if moveDirection:
 			#apply dash move
-			if currentState == states.DASH: 
-				velocity.x = moveDirection.x * dashSpeed
-				velocity.z = moveDirection.z * dashSpeed 
-				
+			#if currentState == states.DASH: 
+				#velocity.x = moveDirection.x * dashSpeed
+				#velocity.z = moveDirection.z * dashSpeed 
+				#
 			#apply slide move
-			elif currentState == states.SLIDE:
+			if currentState == states.SLIDE:
 				desiredMoveSpeed += 2.5 * delta
 				
 				velocity.x = moveDirection.x * desiredMoveSpeed
@@ -581,9 +569,6 @@ func audiochanges():
 			walk.stop()
 
 
-
-func can_damage(value: bool):
-	$CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew.can_damage = value
 	
 	
 func checklanding(delta):
@@ -601,6 +586,8 @@ func checklanding(delta):
 			else:
 				currentState = states.WALK
 
+
+
 var attacking = false
 var attackcycle = 0
 
@@ -612,16 +599,16 @@ func attack():
 		if attackcycle == 0:
 			attack_state_machine.travel('Attack1')
 			attackcycle = 1
-			
-		elif %SecondAttackTimer.time_left and attackcycle == 1:
-			attack_state_machine.travel('Attack2')
-			attackcycle = 0
-		else:
-			attackcycle = 0
+	if %SecondAttackTimer.time_left and attackcycle == 1 and Input.is_action_just_pressed("shoot") and !attacking:
+		attack_state_machine.travel('Attack2')
+		attackcycle = 0
+	else:
+		attackcycle = 0
 
 func attack_toggle(value : bool): #changes the attacking variable to true when attack 1 animation is playing
 	attacking = value
-
+func can_damage(value: bool):
+	$CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew.can_damage = value
 
 #@onready var swordcollider = $swordcollider
 #@onready var hitsound = $hitsound
@@ -639,7 +626,7 @@ func slidekill():
 		if slidecollider and 'slidekilled' in slidecollider:
 			slidecollider.slidekilled()
 			print("slidekill")
-			%CameraHolder.shake_impact(15.0,20.0)
+			%CameraHolder.shake_impact(2.0,10.0)
 
 
 @onready var dashkillray = $CameraHolder/Camera3D/dashkill
@@ -691,7 +678,6 @@ func start_dash_to_enemy(enemy):
 	
 	# When dash completes, execute the kill
 	tween.tween_callback(execute_kill.bind(enemy))
-	
 func execute_kill(enemy):
 	# Kill the enemy
 	enemy.dashkilled()
@@ -721,9 +707,7 @@ func slam():
 		velocity.y = slam_jump_force  # go upward a bit
 		speedlines.visible = false
 
-@onready var slamlines = $slamlines
 @onready var groundslamaudio = $groundslamaudio
-
 
 func applyslam(delta):
 	var damage_radius = 10.0
@@ -737,7 +721,6 @@ func applyslam(delta):
 			if velocity.y >= 0:
 				slam_phase = "down"
 				velocity.y += slam_down_boost  # snap downward
-				#slamlines.visible = false
 		
 		elif slam_phase == "down":
 			# apply extra-strong gravity
