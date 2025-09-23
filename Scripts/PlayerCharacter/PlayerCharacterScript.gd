@@ -687,12 +687,18 @@ func execute_kill(enemy):
 	
 	is_dashing = false
 	speedlines.visible = false
+	
+@onready var canvas_layer = $CanvasLayer
+
 func _input(event):
 	if event.is_action_pressed("dash_kill") and (currentState == states.INAIR or currentState == states.JUMP): # add "dash_kill" in Input Map
 		dashkill()
 	if event.is_action_pressed("groundslam")  and (currentState == states.INAIR or currentState == states.JUMP) :
 		slam()
-
+	if event.is_action_pressed("tutorial"):
+		canvas_layer.visible = true
+	if event.is_action_released("tutorial"):
+		canvas_layer.visible = false
 var slamming = false
 var slam_jump_force = 400.0   # how high you pop up
 var slam_gravity = 600.0       # downward acceleration

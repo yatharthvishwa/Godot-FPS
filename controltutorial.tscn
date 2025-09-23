@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3itq3mlnqhut"]
+
+[ext_resource type="FontFile" uid="uid://dfetpky7pv2mp" path="res://Fonts/Doom2016Text-GOlBq.ttf" id="1_5delm"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -266.0
+offset_top = -205.0
+offset_right = 266.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -153.0
+offset_right = 180.0
+offset_bottom = 153.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.926299, 2.5028e-06, 1.54018e-06, 1)
+theme_override_fonts/font = ExtResource("1_5delm")
+theme_override_font_sizes/font_size = 25
+text = "CONTROLS
+-WHILE IN AIR PRESS RIGHTCLICK WHILE LOOKING AT ENEMY TO 
+DASHKILL
+-WHILE IN AIR PRESS ALT TO GROUND SLAM
+-SLIDE AND JUMP REPEATEDLY TO GAIN MASSIVE MOVEMENTUM
+please keep in mind im implemeting the health system
+right now :)"

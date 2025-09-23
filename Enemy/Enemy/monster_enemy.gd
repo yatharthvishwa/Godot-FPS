@@ -51,7 +51,6 @@ func slidekilled():
 @onready var dashkillcollision_shape_3d = $dashkillhitbox2/CollisionShape3D
 
 func dashkilled():
-
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
 	#$AnimationTree.active = false
@@ -65,7 +64,8 @@ func dashkilled():
 	set_physics_process(false)
 	set_process(false)
 	dashkillcollision_shape_3d.disabled = true
-	
+	get_tree().call_group("world", "on_enemy_dashkilled", self)
+	#queue_free()
 func slamkilled():
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
