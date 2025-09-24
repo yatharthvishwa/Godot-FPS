@@ -750,3 +750,20 @@ func _on_slam_impact():
 			print("radius")
 			if enemy.has_method("slamkilled"):
 				enemy.slamkilled()
+
+var max_health = 100
+var current_health: int = max_health
+var is_dead = false
+func take_damage(amount : int):
+	if is_dead:
+		return
+	
+	current_health -= amount
+	
+	if current_health <= 0:
+		is_dead = true
+		playerdead()
+		
+func playerdead():
+	is_dead = true
+	get_tree().reload_current_scene()

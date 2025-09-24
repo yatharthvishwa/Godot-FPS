@@ -13,13 +13,14 @@ extends CharacterBody3D
 
 
 func move_to_player(delta):
+	var gravity = -10.0 * delta
 	if position.distance_to(player.position) < notice_radius:
 		var target_dir = (player.position - position).normalized()
 		var target_vec2 = Vector2(target_dir.x , target_dir.z)
 		var target_angle = -target_vec2.angle() + PI/2 
 		rotation.y = rotate_toward(rotation.y, target_angle, rotation_speed_towards_player * delta )
 		if position.distance_to(player.position) > attack_radius: #if position is greater than attack radius then move towards player
-			velocity = Vector3(target_vec2.x , 0 , target_vec2.y) * SPEED
+			velocity = Vector3(target_vec2.x ,gravity, target_vec2.y) * SPEED
 			move_state_machine.travel('Run')
 		else:
 			velocity = Vector3.ZERO

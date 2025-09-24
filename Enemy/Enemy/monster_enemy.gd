@@ -6,7 +6,7 @@ extends Enemy
 
 func _physics_process(delta):
 	move_to_player(delta)
-
+	punchdamage()
 
 func _on_attack_timer_timeout():
 	if position.distance_to(player.position) < attack_radius:
@@ -78,7 +78,17 @@ func slamkilled():
 	set_physics_process(false)
 	set_process(false)
 	dashkillcollision_shape_3d.disabled = true
-var candie = false
 
-func dietoggle(value:bool):
-	candie = value
+var ispunching = false
+func ispunchingtoggle(value : bool):
+	ispunching = value
+
+func punchdamage():
+	if ispunching and position.distance_to(player.position) < attack_radius:
+		var playergroupintree = get_tree().get_nodes_in_group("player")
+		if playergroupintree.size() > 0:
+			var playernode = playergroupintree[0] # get the actual player node
+			print("player in position")
+			if playernode.has_method("take_damage"):
+				playernode.take_damage(50)
+				print("damagesent")
