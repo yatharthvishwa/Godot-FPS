@@ -123,6 +123,7 @@ func _process(_delta):
 	
 	inputManagement()
 	
+	print(current_health)
 	
 func _physics_process(delta):
 	
@@ -751,19 +752,32 @@ func _on_slam_impact():
 			if enemy.has_method("slamkilled"):
 				enemy.slamkilled()
 
+@onready var bloodoverlay = $bloodoverlay
+
 var max_health = 100
 var current_health: int = max_health
+@onready var damage_cooldown_timer = $damage_cooldown_timer
+var can_take_damage = true
 var is_dead = false
 func take_damage(amount : int):
 	if is_dead:
 		return
-	
-	current_health -= amount
+	if can_take_damage:
+		current_health -= amount
+		bloodoverlay.visible = true
+		damage_cooldown_timer.start()
+		#await get_tree().create_timer(2.0).timeout
+		#bloodoverlay.visible = false
 	
 	if current_health <= 0:
 		is_dead = true
 		playerdead()
-		
+
+func _on_damage_cooldown_timer_timeout():
+	can_take_damage = true
+	current_health = max_health
+	bloodoverlay.visible = false
+
 func playerdead():
 	is_dead = true
 	get_tree().reload_current_scene()

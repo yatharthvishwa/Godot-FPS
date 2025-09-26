@@ -6,7 +6,6 @@ extends Enemy
 
 func _physics_process(delta):
 	move_to_player(delta)
-	punchdamage()
 
 func _on_attack_timer_timeout():
 	if position.distance_to(player.position) < attack_radius:
@@ -82,13 +81,37 @@ func slamkilled():
 var ispunching = false
 func ispunchingtoggle(value : bool):
 	ispunching = value
+	
+@onready var damagewaittimer = $Timer/damagewaittimer
+var damage_given_to_player = false
+#func punchdamage():
+	#if ispunching and position.distance_to(player.position) < attack_radius:
+		#var playergroupintree = get_tree().get_nodes_in_group("player")
+		#if playergroupintree.size() > 0:
+			#var playernode = playergroupintree[0] # get the actual player node
+			#print("player in position")
+			#if playernode.has_method("take_damage"):
+				#pass
+				#damagewaittimer.start()
+				#damage_given_to_player = true
+				#playernode.take_damage(50)
+				#print("damagesent")
 
-func punchdamage():
-	if ispunching and position.distance_to(player.position) < attack_radius:
+#func _on_damagewaittimer_timeout():
+	#print("timeout")
+	#damage_given_to_player = false
+	#var playergroupintree = get_tree().get_nodes_in_group("player")
+	#if playergroupintree.size() > 0:
+		#var playernode = playergroupintree[0]
+		#playernode.current_health = playernode.max_health
+
+func _on_punchhitbox_body_entered(body):
+	if ispunching:
 		var playergroupintree = get_tree().get_nodes_in_group("player")
 		if playergroupintree.size() > 0:
-			var playernode = playergroupintree[0] # get the actual player node
-			print("player in position")
+			var playernode = playergroupintree[0]
 			if playernode.has_method("take_damage"):
-				playernode.take_damage(50)
-				print("damagesent")
+					#damagewaittimer.start()
+					#damage_given_to_player = true
+					playernode.take_damage(50)
+					print("damagesent")
