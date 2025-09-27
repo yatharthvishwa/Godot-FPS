@@ -8,16 +8,20 @@ func _physics_process(delta):
 	move_to_player(delta)
 
 func _on_attack_timer_timeout():
-	if position.distance_to(player.position) < attack_radius:
-		punch_attack_animation()
+	if !enemydead:
+		if position.distance_to(player.position) < attack_radius:
+			punch_attack_animation()
 
 func punch_attack_animation():
 	$AnimationTree.set("parameters/PunchOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 
+var enemydead = false
 func hit():
+	enemydead = true
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
-	#$AnimationTree.active = false
+	$AnimationTree.set("parameters/PunchOneShot/abort", true)
+	$AnimationTree.set("parameters/PunchOneShot/active", false)
 	enemyhitbox.disabled = true
 	runaudio.stop()
 	footstepsaudio.stop()
@@ -32,7 +36,6 @@ func hit():
 @onready var enemyhitbox = %enemyhitbox
 
 func slidekilled():
-
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
 	#$AnimationTree.active = false
@@ -52,7 +55,6 @@ func slidekilled():
 func dashkilled():
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
-	#$AnimationTree.active = false
 	enemyhitbox.disabled = true
 	slidekillaudio.play()
 	debris.emitting = true
@@ -63,8 +65,7 @@ func dashkilled():
 	set_physics_process(false)
 	set_process(false)
 	dashkillcollision_shape_3d.disabled = true
-	get_tree().call_group("world", "on_enemy_dashkilled", self)
-	#queue_free()
+	get_tree().call_group("world", "on_enemy_dashkilled", self) #this is for music
 func slamkilled():
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
@@ -106,7 +107,8 @@ var damage_given_to_player = false
 		#playernode.current_health = playernode.max_health
 
 func _on_punchhitbox_body_entered(body):
-	if ispunching:
+	print("entered")
+	if ispunching: #this is not being turned on
 		var playergroupintree = get_tree().get_nodes_in_group("player")
 		if playergroupintree.size() > 0:
 			var playernode = playergroupintree[0]
