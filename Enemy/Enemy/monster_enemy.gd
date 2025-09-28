@@ -17,6 +17,7 @@ func punch_attack_animation():
 
 var enemydead = false
 func hit():
+	Gamemanager.add_kill()
 	enemydead = true
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
@@ -36,6 +37,7 @@ func hit():
 @onready var enemyhitbox = %enemyhitbox
 
 func slidekilled():
+	Gamemanager.add_kill()
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
 	#$AnimationTree.active = false
@@ -65,8 +67,10 @@ func dashkilled():
 	set_physics_process(false)
 	set_process(false)
 	dashkillcollision_shape_3d.disabled = true
+	Gamemanager.add_kill()
 	get_tree().call_group("world", "on_enemy_dashkilled", self) #this is for music
 func slamkilled():
+	Gamemanager.add_kill()
 	move_state_machine.travel('Death')
 	velocity = Vector3.ZERO
 	enemyhitbox.disabled = true

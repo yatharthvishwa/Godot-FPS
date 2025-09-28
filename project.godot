@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/image="uid://re8u0x30fp5d"
 config/icon="res://icon.svg"
 
+[autoload]
+
+Gamemanager="*res://Scripts/Gamemanager.gd"
+
 [display]
 
 window/size/viewport_width=640

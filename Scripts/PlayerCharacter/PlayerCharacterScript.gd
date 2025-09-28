@@ -651,7 +651,7 @@ func dashkill():
 	if dashkillcollider and 'dashkilled' in dashkillcollider:
 		# Start the dash sequence
 		start_dash_to_enemy(dashkillcollider)
-	#else:start_dash_to_enemy(dashkill collider) #i added this
+	#else:start_dash_to_enemy(dashkillcollider) #i added this
 
 func start_dash_to_enemy(enemy):
 	is_dashing = true
@@ -690,6 +690,10 @@ func execute_kill(enemy):
 	speedlines.visible = false
 	
 @onready var controlmenu = $controlmenu
+
+func applyshake(intensity:float,time:float):
+		%CameraHolder.shake_impact(intensity,time)
+
 
 func _input(event):
 	if event.is_action_pressed("dash_kill") and (currentState == states.INAIR or currentState == states.JUMP): # add "dash_kill" in Input Map

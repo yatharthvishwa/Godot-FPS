@@ -9,12 +9,20 @@ extends CharacterBody3D
 @export var notice_radius = 30.0
 @export var attack_radius = 5.0
 
+var rng = RandomNumberGenerator.new()
+
 const attacks = {
 	'jumpattack':"frost_jump",
 	'spinslash':"frost_reverse_slash",
 	'slam':"frost_slam",
-	'downslash':"frost_down_slash"
+	'downslash':"frost_down_slash",
+	'slash':"frost_slash"
 }
+
+func _ready():
+	var playergroupintree = get_tree().get_nodes_in_group("player")
+	if playergroupintree.size() > 0:
+		var playernode = playergroupintree[0]
 
 func _physics_process(delta):
 	move_to_player(delta)
@@ -39,20 +47,72 @@ func move_to_player(delta):
 @onready var frostbane_attack_state_machine = $AnimationTree.get("parameters/FrostAttackStateMachine/playback")
 var isattackfiring = false
 func frostslash():
-	attack_animationoneshot.animation = attacks['downslash']
-	$AnimationTree.set("parameters/FrostAttackOneShot/request", true)
-func rangeattack():
-	attack_animationoneshot.animation = attacks['slam']
+	var chosen_attack = "spinslash"
+	if rng.randi() %2 == 0:
+		chosen_attack = "downslash"
+	attack_animationoneshot.animation = attacks[chosen_attack]
 	$AnimationTree.set("parameters/FrostAttackOneShot/request", true)
 	isattackfiring = true
-	velocity.y = -20.0
-	await get_tree().create_timer(2.46).timeout
-	isattackfiring = false
+	if chosen_attack == "downslash":
+		print("timercreated")
+		await get_tree().create_timer(2.7).timeout
+		isattackfiring = false
+	elif chosen_attack == "spinslash":
+		await get_tree().create_timer(2.8).timeout
+		isattackfiring = false
+func rangeattack():
+	var chosen_attack = "slam"
+	if rng.randi() %2 == 0:
+		chosen_attack = "jumpattack"
+	attack_animationoneshot.animation = attacks[chosen_attack]
+	$AnimationTree.set("parameters/FrostAttackOneShot/request", true)
+	isattackfiring = true
+	if chosen_attack == "slam":
+		await get_tree().create_timer(2.46).timeout
+
+		isattackfiring = false
+	elif chosen_attack == "jumpattack":
+		await get_tree().create_timer(2.46).timeout
+		isattackfiring = false
+
+@onready var enemycollision_shape_3d = $CollisionShape3D
+@onready var mutant_mesh = $frostbane2/Armature/Skeleton3D/MutantMesh
+
+@onready var debris = $frostparticles/debris
+@onready var blood = $frostparticles/blood
+
+
+var frostmax_health = 100
+var frostcurrent_health: int = frostmax_health
+var is_dead = false
+func dashkilled():
+	if is_dead:
+		return
+	attack_animationoneshot.animation = "frost_hit"
+	$AnimationTree.set("parameters/FrostAttackOneShot/request", true)
+	debris.emitting = true
+	blood.emitting = true
+	frostcurrent_health -= 10
+	
+	if frostcurrent_health <= 0:
+		is_dead = true
+		frostdead()
+
+	
+func frostdead():
+	frostbane_move_state_machine.travel('frost_death')
+	velocity = Vector3.ZERO
+	enemycollision_shape_3d.disabled = true
+	set_physics_process(false)
+	set_process(false)
+	$AnimationTree.set("parameters/FrostAttackOneShot/abort", true)
+	$AnimationTree.set("parameters/FrostAttackOneShot/active", false)
+
 
 func _on_slash_timer_timeout():
-	if position.distance_to(player.position) < attack_radius:
-		frostbane_move_state_machine.travel('FrostRun')
-		frostslash()
-	else:
-		if !isattackfiring:
+	if !isattackfiring and !is_dead:
+		if position.distance_to(player.position) < attack_radius:
+			frostslash()
+		else:
 			rangeattack()
+			
