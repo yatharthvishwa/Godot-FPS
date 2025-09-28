@@ -1,0 +1,98 @@
+[gd_scene load_steps=17 format=3 uid="uid://bsa0sb470xipp"]
+
+[ext_resource type="Script" uid="uid://6p3gqob2r3es" path="res://slash/slash.gd" id="1_jj28f"]
+[ext_resource type="Shader" uid="uid://bhhuyn24o3xip" path="res://slash/slash.tres" id="1_u8n31"]
+[ext_resource type="Texture2D" uid="uid://bg1ie0h16wk" path="res://slash/Gradient01.png" id="2_xu304"]
+[ext_resource type="ArrayMesh" uid="uid://c5yqq47dom8yk" path="res://slash/ProjectileMesh02.obj" id="3_nlo8d"]
+[ext_resource type="Shader" uid="uid://5heab5uxsq0o" path="res://slash/slashscroll.tres" id="4_nlo8d"]
+[ext_resource type="Texture2D" uid="uid://ruf4agf7paoj" path="res://slash/Noise01.png" id="5_jj28f"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jj28f"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_t0gm7"]
+sky_material = SubResource("ProceduralSkyMaterial_jj28f")
+
+[sub_resource type="Environment" id="Environment_fu023"]
+background_mode = 2
+sky = SubResource("Sky_t0gm7")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_atf0b"]
+render_priority = 0
+shader = ExtResource("1_u8n31")
+shader_parameter/Texture2DParameter = ExtResource("2_xu304")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_y7qsb"]
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+color = Color(2.8, 1.3, 0.8, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cgbih"]
+render_priority = 0
+shader = ExtResource("1_u8n31")
+shader_parameter/Texture2DParameter = ExtResource("2_xu304")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hywep"]
+gravity = Vector3(0, 0, 0)
+color = Color(1, 0.7, 0.2, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t0gm7"]
+render_priority = 0
+shader = ExtResource("4_nlo8d")
+shader_parameter/TextureTiling01 = Vector2(1, 1)
+shader_parameter/Vector2Parameter = Vector2(0, -3)
+shader_parameter/Maintext = ExtResource("5_jj28f")
+shader_parameter/Gradienttext = ExtResource("2_xu304")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tdiul"]
+direction = Vector3(0, 0, 1)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+color = Color(2.8, 1.3, 0.8, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nlo8d"]
+size = Vector3(5.33496, 0.585693, 3.42468)
+
+[node name="Slash" type="Area3D"]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource("1_jj28f")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_fu023")
+
+[node name="Slashmesh" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_atf0b")
+amount = 1
+lifetime = 0.7
+fixed_fps = 75
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_y7qsb")
+draw_pass_1 = ExtResource("3_nlo8d")
+
+[node name="trail" type="GPUParticles3D" parent="Slashmesh"]
+visible = false
+sorting_offset = -2.0
+material_override = SubResource("ShaderMaterial_cgbih")
+amount = 1
+lifetime = 0.7
+process_material = SubResource("ParticleProcessMaterial_hywep")
+draw_pass_1 = ExtResource("3_nlo8d")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="Slashmesh"]
+material_override = SubResource("ShaderMaterial_t0gm7")
+amount = 1
+lifetime = 0.7
+fixed_fps = 75
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_tdiul")
+draw_pass_1 = ExtResource("3_nlo8d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.352112)
+shape = SubResource("BoxShape3D_nlo8d")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
