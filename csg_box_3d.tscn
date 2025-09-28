@@ -138,31 +138,28 @@ render_target_update_mode = 4
 transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 29.5062, 67.6169, 18.0147)
 
 [node name="Skeleton3D" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature" index="0"]
-bones/3/rotation = Quaternion(0.39893, -0.0762012, -0.0976205, 0.908581)
-bones/5/rotation = Quaternion(7.25329e-08, 4.6636e-08, 0.31606, 0.948739)
-bones/6/rotation = Quaternion(0.0892851, -0.00622386, 0.300256, 0.94965)
-bones/26/rotation = Quaternion(0.155655, -0.0753939, -0.0261874, 0.984582)
-bones/27/rotation = Quaternion(0.454594, 0.0328847, 0.805312, 0.379125)
-bones/28/rotation = Quaternion(-0.00248309, 6.07159e-07, 6.69957e-07, 0.999997)
-bones/29/rotation = Quaternion(-0.0024842, -4.51109e-08, 1.63607e-07, 0.999997)
-bones/30/rotation = Quaternion(0.0524858, -0.0160993, 0.799086, 0.598705)
-bones/31/rotation = Quaternion(0.209557, 0.00677284, -0.00321064, 0.977768)
-bones/32/rotation = Quaternion(0.0963702, 0.0107436, -0.000109889, 0.995288)
-bones/33/rotation = Quaternion(0.0743415, 0.099636, 0.727304, 0.674963)
-bones/34/rotation = Quaternion(0.199081, -3.27616e-07, 7.9042e-08, 0.979983)
-bones/35/rotation = Quaternion(0.199092, 1.30551e-06, -8.50672e-07, 0.979981)
-bones/36/rotation = Quaternion(0.00037811, 0.141286, 0.673758, 0.725319)
-bones/37/rotation = Quaternion(0.290427, 3.79888e-06, -1.54498e-06, 0.956897)
-bones/38/rotation = Quaternion(0.245019, -1.44216e-06, 4.85617e-06, 0.969518)
-bones/39/rotation = Quaternion(0.00750606, 0.223445, 0.565417, 0.793927)
-bones/40/rotation = Quaternion(0.312888, 5.48595e-07, -4.54865e-07, 0.94979)
-bones/41/rotation = Quaternion(0.144928, -1.77128e-08, -7.86581e-07, 0.989442)
-
-[node name="Arms" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D" index="0"]
-cast_shadow = 0
+bones/3/rotation = Quaternion(0.39547, -0.145989, -0.0754371, 0.903659)
+bones/5/rotation = Quaternion(0.147584, -0.00231843, 0.0044555, 0.989037)
+bones/6/rotation = Quaternion(0.0391125, 0.328518, -0.106173, 0.937696)
+bones/26/rotation = Quaternion(0.155951, -0.0742673, -0.0279646, 0.984572)
+bones/27/rotation = Quaternion(0.455365, 0.0345259, 0.805243, 0.378198)
+bones/28/rotation = Quaternion(-0.000445097, 6.14681e-07, 7.13732e-07, 1)
+bones/29/rotation = Quaternion(-0.000446152, -6.43125e-08, 1.73857e-07, 1)
+bones/30/rotation = Quaternion(0.0504573, -0.0188061, 0.799027, 0.598879)
+bones/31/rotation = Quaternion(0.206244, 0.00678369, -0.0031877, 0.978472)
+bones/32/rotation = Quaternion(0.0929986, 0.0107439, -7.34771e-05, 0.995608)
+bones/33/rotation = Quaternion(0.0720619, 0.0971794, 0.727636, 0.67521)
+bones/34/rotation = Quaternion(0.19576, -2.82025e-07, 7.18212e-08, 0.980652)
+bones/35/rotation = Quaternion(0.195762, 1.309e-06, -8.56109e-07, 0.980652)
+bones/36/rotation = Quaternion(-0.00207886, 0.139003, 0.674233, 0.725317)
+bones/37/rotation = Quaternion(0.287183, 3.81436e-06, -1.54486e-06, 0.957876)
+bones/38/rotation = Quaternion(0.241734, -1.44207e-06, 4.89996e-06, 0.970343)
+bones/39/rotation = Quaternion(0.00482477, 0.221534, 0.566168, 0.793948)
+bones/40/rotation = Quaternion(0.309669, 5.66131e-07, -4.01758e-07, 0.950844)
+bones/41/rotation = Quaternion(0.141586, -8.10418e-08, -8.18038e-07, 0.989926)
 
 [node name="BoneAttachment3D" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.679364, -0.541235, 0.495509, 0.254005, 0.460068, 0.850775, -0.688437, 0.703848, -0.175077, -33.9438, 23.806, -43.6073)
+transform = Transform3D(-0.319265, -0.934656, 0.156487, -0.695326, 0.343233, 0.631436, -0.643888, 0.0927859, -0.759473, -33.9438, 23.806, -43.6073)
 
 [node name="MeshInstance3D" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="3"]
 cast_shadow = 0
@@ -174,7 +171,7 @@ pitch_scale = 0.77
 [node name="run" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="7"]
 volume_db = -4.622
 
-[node name="slide" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="8"]
+[node name="slide" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="9"]
 volume_db = -2.443
 
 [node name="walk2" type="AudioStreamPlayer" parent="SubViewportContainer/SubViewport/PlayerCharacter"]

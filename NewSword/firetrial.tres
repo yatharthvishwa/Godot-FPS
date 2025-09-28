@@ -7,6 +7,5 @@ render_mode blend_mul, depth_draw_opaque, cull_back, diffuse_lambert, specular_t
 
 
 "
-graph_offset = Vector2(-17, 11)
 modes/blend = 3
 modes/specular = 1

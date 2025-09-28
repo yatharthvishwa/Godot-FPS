@@ -594,11 +594,13 @@ var attackcycle = 0
 
 @onready var attack_state_machine = $CameraHolder/Camera3D/FirstpersonRig/PlayerAnimationTree.get("parameters/AttackStateMachine/playback")
 
+
 func attack():
 	if Input.is_action_just_pressed("shoot") and !attacking:
 		player_animation_tree.set("parameters/AttackOneShot/request",true)
 		if attackcycle == 0:
 			attack_state_machine.travel('Attack1')
+			shootslash()
 			attackcycle = 1
 	if %SecondAttackTimer.time_left and attackcycle == 1 and Input.is_action_just_pressed("shoot") and !attacking:
 		attack_state_machine.travel('Attack2')
@@ -790,3 +792,15 @@ func _on_damage_cooldown_timer_timeout():
 func playerdead():
 	is_dead = true
 	get_tree().reload_current_scene()
+
+@onready var marker_3d = $Marker3D
+
+var slash_scene = preload("res://slash/slash.tscn")
+func shootslash():
+	var slash = slash_scene.instantiate()
+	get_tree().current_scene.add_child(slash)
+	slash.global_position = %CameraHolder.global_position + -%CameraHolder.global_transform.basis.z * -1
+	slash.direction = -%CameraHolder.global_transform.basis.z.normalized()
+	#var forward_dir = marker_3d.global_transform.basis.z.normalized()
+	#var up_dir = Vector3.UP
+	#slash.look_at(slash.global_position + forward_dir, up_dir)
