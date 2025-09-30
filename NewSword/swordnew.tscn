@@ -104,7 +104,7 @@ emission_curve = SubResource("CurveTexture_asoti")
 size = 0.1
 section_length = 0.1
 
-[node name="Sword" type="Node3D"]
+[node name="Sword" type="Node3D" groups=["sword"]]
 script = ExtResource("1_7t83u")
 
 [node name="swordcollider" type="RayCast3D" parent="."]
@@ -122,28 +122,29 @@ mesh = ExtResource("1_4knmt")
 [node name="hitsound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_v4e6t")
 
-[node name="Hellcleaver" type="MeshInstance3D" parent="."]
+[node name="Hellcleaver" type="MeshInstance3D" parent="." groups=["sword"]]
 transform = Transform3D(-1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1, 4.37114e-08, 0.5, 0)
 material_overlay = SubResource("ShaderMaterial_mk28m")
 cast_shadow = 0
 mesh = ExtResource("4_2y5b7")
 
-[node name="Fire" type="GPUParticles3D" parent="."]
+[node name="Fire" type="GPUParticles3D" parent="." groups=["sword"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.673165, 0)
 material_override = SubResource("StandardMaterial3D_oe6c1")
 cast_shadow = 0
+emitting = false
 amount = 30
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_uy0vu")
 draw_pass_1 = SubResource("QuadMesh_lfj7s")
 
-[node name="small trails" type="GPUParticles3D" parent="."]
+[node name="small trails" type="GPUParticles3D" parent="." groups=["sword"]]
 transform = Transform3D(0.99997, 0.00753703, 0.00163844, -0.00753335, 0.999969, -0.00223433, -0.00165524, 0.00222191, 0.999996, 0, 0.666707, 0)
 material_override = SubResource("StandardMaterial3D_nfv6g")
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_nfv6g")
 draw_pass_1 = SubResource("RibbonTrailMesh_anvb6")
 
-[node name="Hellcleaver2" type="MeshInstance3D" parent="."]
+[node name="Hellcleaver2" type="MeshInstance3D" parent="." groups=["sword"]]
 transform = Transform3D(-1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1, 4.37114e-08, 0.5, 0)
 mesh = ExtResource("4_2y5b7")

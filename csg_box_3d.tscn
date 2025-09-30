@@ -138,28 +138,28 @@ render_target_update_mode = 4
 transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 29.5062, 67.6169, 18.0147)
 
 [node name="Skeleton3D" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature" index="0"]
-bones/3/rotation = Quaternion(0.39547, -0.145989, -0.0754371, 0.903659)
-bones/5/rotation = Quaternion(0.147584, -0.00231843, 0.0044555, 0.989037)
-bones/6/rotation = Quaternion(0.0391125, 0.328518, -0.106173, 0.937696)
-bones/26/rotation = Quaternion(0.155951, -0.0742673, -0.0279646, 0.984572)
-bones/27/rotation = Quaternion(0.455365, 0.0345259, 0.805243, 0.378198)
-bones/28/rotation = Quaternion(-0.000445097, 6.14681e-07, 7.13732e-07, 1)
-bones/29/rotation = Quaternion(-0.000446152, -6.43125e-08, 1.73857e-07, 1)
-bones/30/rotation = Quaternion(0.0504573, -0.0188061, 0.799027, 0.598879)
-bones/31/rotation = Quaternion(0.206244, 0.00678369, -0.0031877, 0.978472)
-bones/32/rotation = Quaternion(0.0929986, 0.0107439, -7.34771e-05, 0.995608)
-bones/33/rotation = Quaternion(0.0720619, 0.0971794, 0.727636, 0.67521)
-bones/34/rotation = Quaternion(0.19576, -2.82025e-07, 7.18212e-08, 0.980652)
-bones/35/rotation = Quaternion(0.195762, 1.309e-06, -8.56109e-07, 0.980652)
-bones/36/rotation = Quaternion(-0.00207886, 0.139003, 0.674233, 0.725317)
-bones/37/rotation = Quaternion(0.287183, 3.81436e-06, -1.54486e-06, 0.957876)
-bones/38/rotation = Quaternion(0.241734, -1.44207e-06, 4.89996e-06, 0.970343)
-bones/39/rotation = Quaternion(0.00482477, 0.221534, 0.566168, 0.793948)
-bones/40/rotation = Quaternion(0.309669, 5.66131e-07, -4.01758e-07, 0.950844)
-bones/41/rotation = Quaternion(0.141586, -8.10418e-08, -8.18038e-07, 0.989926)
+bones/3/rotation = Quaternion(0.387904, 0.236986, -0.189139, 0.870399)
+bones/5/rotation = Quaternion(5.69178e-08, 4.3481e-08, 0.620318, 0.784351)
+bones/6/rotation = Quaternion(0.203173, -0.174715, 0.615951, 0.74081)
+bones/26/rotation = Quaternion(0.154275, -0.069741, -0.0137997, 0.985467)
+bones/27/rotation = Quaternion(0.453079, 0.0296755, 0.805437, 0.380933)
+bones/28/rotation = Quaternion(-0.00646755, 6.60042e-07, 6.52624e-07, 0.999979)
+bones/29/rotation = Quaternion(-0.00646865, -8.8085e-08, 2.03124e-07, 0.999979)
+bones/30/rotation = Quaternion(0.0572915, -0.00968237, 0.79919, 0.598264)
+bones/31/rotation = Quaternion(0.217402, 0.00674685, -0.00326489, 0.976054)
+bones/32/rotation = Quaternion(0.10435, 0.0107424, -0.000196095, 0.994483)
+bones/33/rotation = Quaternion(0.0797592, 0.105473, 0.72648, 0.674344)
+bones/34/rotation = Quaternion(0.206944, -2.85931e-07, 3.06311e-08, 0.978353)
+bones/35/rotation = Quaternion(0.206945, 1.28806e-06, -8.65636e-07, 0.978353)
+bones/36/rotation = Quaternion(0.00620231, 0.146692, 0.672602, 0.725293)
+bones/37/rotation = Quaternion(0.298101, 3.82172e-06, -1.62285e-06, 0.954535)
+bones/38/rotation = Quaternion(0.252796, -1.3378e-06, 4.95071e-06, 0.96752)
+bones/39/rotation = Quaternion(0.0138808, 0.227977, 0.563604, 0.793841)
+bones/40/rotation = Quaternion(0.320505, 6.32084e-07, -4.16783e-07, 0.947247)
+bones/41/rotation = Quaternion(0.152869, -1.21276e-07, -8.09097e-07, 0.988247)
 
 [node name="BoneAttachment3D" parent="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D" index="1"]
-transform = Transform3D(-0.319265, -0.934656, 0.156487, -0.695326, 0.343233, 0.631436, -0.643888, 0.0927859, -0.759473, -33.9438, 23.806, -43.6073)
+transform = Transform3D(-0.471881, -0.48459, 0.736546, 0.851083, -0.0322571, 0.524039, -0.230185, 0.874147, 0.427648, -33.9438, 23.806, -43.6073)
 
 [node name="MeshInstance3D" parent="SubViewportContainer/SubViewport/PlayerCharacter" index="3"]
 cast_shadow = 0
@@ -311,3 +311,4 @@ stream = ExtResource("13_xtit0")
 
 [editable path="SubViewportContainer/SubViewport/PlayerCharacter"]
 [editable path="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig"]
+[editable path="SubViewportContainer/SubViewport/PlayerCharacter/CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew"]

@@ -119,6 +119,8 @@ func _ready():
 func _process(_delta):
 	#the behaviours that is preferable to check every "visual" frame
 	
+	#killeffect()
+	
 	slidekill()
 	
 	inputManagement()
@@ -794,13 +796,28 @@ func playerdead():
 	get_tree().reload_current_scene()
 
 @onready var marker_3d = $Marker3D
+@onready var slasheffect = $slasheffect
 
 var slash_scene = preload("res://slash/slash.tscn")
 func shootslash():
 	var slash = slash_scene.instantiate()
 	get_tree().current_scene.add_child(slash)
-	slash.global_position = %CameraHolder.global_position + -%CameraHolder.global_transform.basis.z * -1
+	#slash.global_position = %CameraHolder.global_position + -%CameraHolder.global_transform.basis.z * -1
 	slash.direction = -%CameraHolder.global_transform.basis.z.normalized()
+	slash.global_position = marker_3d.global_position
+	slasheffect.play()
+	applyshake(20.0, 10.0)
 	#var forward_dir = marker_3d.global_transform.basis.z.normalized()
 	#var up_dir = Vector3.UP
 	#slash.look_at(slash.global_position + forward_dir, up_dir)
+
+@onready var hellcleaver = $CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew/Hellcleaver
+@onready var fire = $CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew/Fire
+@onready var small_trails = $"CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew/small trails"
+
+
+func killeffect():
+	if Gamemanager.kill_count == 10:
+		fire.emitting = true
+	if Gamemanager.kill_count == 10:
+		small_trails.emitting = true
