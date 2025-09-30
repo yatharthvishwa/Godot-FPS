@@ -141,10 +141,13 @@ draw_pass_1 = SubResource("QuadMesh_lfj7s")
 [node name="small trails" type="GPUParticles3D" parent="." groups=["sword"]]
 transform = Transform3D(0.99997, 0.00753703, 0.00163844, -0.00753335, 0.999969, -0.00223433, -0.00165524, 0.00222191, 0.999996, 0, 0.666707, 0)
 material_override = SubResource("StandardMaterial3D_nfv6g")
+cast_shadow = 0
+emitting = false
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_nfv6g")
 draw_pass_1 = SubResource("RibbonTrailMesh_anvb6")
 
 [node name="Hellcleaver2" type="MeshInstance3D" parent="." groups=["sword"]]
 transform = Transform3D(-1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1, 4.37114e-08, 0.5, 0)
+cast_shadow = 0
 mesh = ExtResource("4_2y5b7")

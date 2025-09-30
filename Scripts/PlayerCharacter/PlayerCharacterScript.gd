@@ -602,7 +602,8 @@ func attack():
 		player_animation_tree.set("parameters/AttackOneShot/request",true)
 		if attackcycle == 0:
 			attack_state_machine.travel('Attack1')
-			shootslash()
+			if canfireslash:
+				shootslash()
 			attackcycle = 1
 	if %SecondAttackTimer.time_left and attackcycle == 1 and Input.is_action_just_pressed("shoot") and !attacking:
 		attack_state_machine.travel('Attack2')
@@ -816,8 +817,26 @@ func shootslash():
 @onready var small_trails = $"CameraHolder/Camera3D/FirstpersonRig/Armature/Skeleton3D/BoneAttachment3D/Swordnew/small trails"
 
 
+@onready var monster = preload("res://Enemy/Enemy/monster_enemy.tscn")
+
+
+var canfireslash = false
 func killeffect():
+	if Gamemanager.kill_count == 5:
+		hellcleaver.visible = true
+	if Gamemanager.kill_count == 7:
+		small_trails.emitting = true
 	if Gamemanager.kill_count == 10:
 		fire.emitting = true
-	if Gamemanager.kill_count == 10:
-		small_trails.emitting = true
+		canfireslash = true
+		for i in range(20):
+			
+			var monsterspawn = monster.instantiate()
+			
+			monsterspawn.position = position + Vector3(
+				randf_range(-20, 20), 
+				0, 
+				randf_range(-20, 20)
+			)
+			
+			get_parent().add_child(monsterspawn)

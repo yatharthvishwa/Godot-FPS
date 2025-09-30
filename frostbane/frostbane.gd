@@ -19,13 +19,16 @@ const attacks = {
 	'slash':"frost_slash"
 }
 
+
+var playernode: Node = null  # declare globally
 func _ready():
 	var playergroupintree = get_tree().get_nodes_in_group("player")
 	if playergroupintree.size() > 0:
-		var playernode = playergroupintree[0]
+		playernode = playergroupintree[0]
 
 func _physics_process(delta):
 	move_to_player(delta)
+
 
 
 func move_to_player(delta):
@@ -45,7 +48,12 @@ func move_to_player(delta):
 	move_and_slide()
 
 @onready var frostbane_attack_state_machine = $AnimationTree.get("parameters/FrostAttackStateMachine/playback")
+
 var isattackfiring = false
+ 
+var slamming = false
+@onready var blastradius = $Blastradius
+
 func frostslash():
 	var chosen_attack = "spinslash"
 	if rng.randi() %2 == 0:
@@ -61,19 +69,27 @@ func frostslash():
 		await get_tree().create_timer(2.8).timeout
 		isattackfiring = false
 func rangeattack():
-	var chosen_attack = "slam"
-	if rng.randi() %2 == 0:
-		chosen_attack = "jumpattack"
+	var chosen_attack = "jumpattack"
+	#if rng.randi() %2 == 0:
+		#chosen_attack = "jumpattack"
 	attack_animationoneshot.animation = attacks[chosen_attack]
 	$AnimationTree.set("parameters/FrostAttackOneShot/request", true)
 	isattackfiring = true
 	if chosen_attack == "slam":
-		await get_tree().create_timer(2.46).timeout
-
+		await get_tree().create_timer(1.82).timeout
+			#await get_tree().create_timer(0.6).timeout
 		isattackfiring = false
 	elif chosen_attack == "jumpattack":
-		await get_tree().create_timer(2.46).timeout
+		slamming = true
+		blastradius.visible = true
+		#await get_tree().create_timer(2.46).timeout
 		isattackfiring = false
+	else:
+		blastradius.visible = false
+		slamming = false
+var shakewhenslam = false
+func toggleshakewhenslam(value:bool):
+	shakewhenslam = value
 
 @onready var enemycollision_shape_3d = $CollisionShape3D
 @onready var mutant_mesh = $frostbane2/Armature/Skeleton3D/MutantMesh
@@ -98,8 +114,9 @@ func dashkilled():
 		is_dead = true
 		frostdead()
 
-	
+
 func frostdead():
+	is_dead = true
 	frostbane_move_state_machine.travel('frost_death')
 	velocity = Vector3.ZERO
 	enemycollision_shape_3d.disabled = true
@@ -108,6 +125,8 @@ func frostdead():
 	$AnimationTree.set("parameters/FrostAttackOneShot/abort", true)
 	$AnimationTree.set("parameters/FrostAttackOneShot/active", false)
 
+func playershake():
+	playernode.applyshake(5.0,1.0)
 
 func _on_slash_timer_timeout():
 	if !isattackfiring and !is_dead:
@@ -116,3 +135,11 @@ func _on_slash_timer_timeout():
 		else:
 			rangeattack()
 			
+
+
+func _on_blastarea_body_entered(body):
+	if slamming:
+		if playernode.has_method("take_damage"):
+			#pass
+			playernode.take_damage(1)
+		
