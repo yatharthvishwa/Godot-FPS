@@ -121,3 +121,4 @@ func _on_punchhitbox_body_entered(body):
 					#damage_given_to_player = true
 					playernode.take_damage(50)
 					print("damagesent")
+					

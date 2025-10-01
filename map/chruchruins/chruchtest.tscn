@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://b71qmed5pdbw0"]
+
+[ext_resource type="PackedScene" uid="uid://bk6qy53gjn0hc" path="res://map/chruchruins/churchscene.gltf" id="1_j1ylw"]
+[ext_resource type="PackedScene" uid="uid://bwggrf7sbmkcv" path="res://Scenes/PlayerCharacterScene.tscn" id="2_idslq"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eng7x"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_bho27"]
+sky_material = SubResource("ProceduralSkyMaterial_eng7x")
+
+[sub_resource type="Environment" id="Environment_7mmxx"]
+background_mode = 2
+sky = SubResource("Sky_bho27")
+tonemap_mode = 2
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7mmxx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_j1ylw")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+
+[node name="PlayerCharacter" parent="." instance=ExtResource("2_idslq")]
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 17.3857, 25.7872, 16.778)

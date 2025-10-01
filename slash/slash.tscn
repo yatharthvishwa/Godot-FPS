@@ -75,7 +75,7 @@ point_count = 2
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_hywep"]
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_fu023"]
 curve_x = SubResource("Curve_atf0b")
 curve_y = SubResource("Curve_y7qsb")
 curve_z = SubResource("Curve_cgbih")
@@ -90,7 +90,7 @@ initial_velocity_min = 40.0
 initial_velocity_max = 60.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.1
-scale_curve = SubResource("CurveXYZTexture_hywep")
+scale_curve = SubResource("CurveXYZTexture_fu023")
 color = Color(6, 2, 1, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_8yhad"]
