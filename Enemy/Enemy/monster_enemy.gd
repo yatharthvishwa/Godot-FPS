@@ -4,13 +4,29 @@ extends Enemy
 @onready var runaudio = $skin/Armature/run
 @onready var animation_player = $skin/AnimationPlayer
 
+
 func _physics_process(delta):
 	move_to_player(delta)
-
-func _on_attack_timer_timeout():
 	if !enemydead:
 		if position.distance_to(player.position) < attack_radius:
-			punch_attack_animation()
+			if can_attack:
+				punch_attack_animation()
+				start_attack_cooldown()
+
+var can_attack = true
+
+func start_attack_cooldown():
+	can_attack = false
+	await get_tree().create_timer(1.0).timeout
+	can_attack = true
+
+
+
+func _on_attack_timer_timeout():
+	pass
+	#if !enemydead:
+		#if position.distance_to(player.position) < attack_radius:
+			#punch_attack_animation()
 
 func punch_attack_animation():
 	$AnimationTree.set("parameters/PunchOneShot/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)

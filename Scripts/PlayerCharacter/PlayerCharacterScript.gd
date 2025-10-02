@@ -793,8 +793,20 @@ func _on_damage_cooldown_timer_timeout():
 	bloodoverlay.visible = false
 
 func playerdead():
+	Gamemanager.kill_count = 0
 	is_dead = true
 	get_tree().reload_current_scene()
+
+@onready var overdrive = $OVERDRIVE
+
+func overdriveshow():
+	overdrive.visible = true
+	await get_tree().create_timer(1.0).timeout
+	overdrive.visible = false
+
+@onready var youwon = $YOUWON
+func showyouwon():
+	youwon.visible = true
 
 @onready var marker_3d = $Marker3D
 @onready var slasheffect = $slasheffect
@@ -829,7 +841,7 @@ func killeffect():
 	if Gamemanager.kill_count == 10:
 		fire.emitting = true
 		canfireslash = true
-		for i in range(20):
+		for i in range(10):
 			
 			var monsterspawn = monster.instantiate()
 			
@@ -840,3 +852,4 @@ func killeffect():
 			)
 			
 			get_parent().add_child(monsterspawn)
+			await get_tree().create_timer(0.3).timeout

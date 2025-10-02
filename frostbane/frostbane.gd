@@ -21,15 +21,21 @@ const attacks = {
 
 
 var playernode: Node = null  # declare globally
+var monsternode : Node = null
 func _ready():
+	
 	var playergroupintree = get_tree().get_nodes_in_group("player")
 	if playergroupintree.size() > 0:
 		playernode = playergroupintree[0]
-
+	var monsterenemy = get_tree().get_nodes_in_group("MONSTERENEMY")
+	if monsterenemy.size() > 0:
+		monsternode = monsterenemy[0]
+		
 func _physics_process(delta):
 	move_to_player(delta)
 
 
+var overdrivelabelshown = false
 
 func move_to_player(delta):
 	var gravity = -10.0 * delta
@@ -42,6 +48,10 @@ func move_to_player(delta):
 			velocity = Vector3(target_vec2.x ,gravity, target_vec2.y) * SPEED
 			frostbane_move_state_machine.travel('FrostRun')
 			if frostcurrent_health <= 70:
+				if !overdrivelabelshown:
+					playernode.overdriveshow()
+					overdrivelabelshown = true
+				monsternode.SPEED = 50
 				SPEED = 30.0
 				$AnimationTree.set("parameters/TimeScale/scale",2.0)
 		else:
@@ -119,6 +129,7 @@ func dashkilled():
 
 
 func frostdead():
+	playernode.showyouwon()
 	is_dead = true
 	frostbane_move_state_machine.travel('frost_death')
 	velocity = Vector3.ZERO

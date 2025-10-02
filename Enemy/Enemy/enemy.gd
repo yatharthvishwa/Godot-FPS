@@ -29,9 +29,9 @@ func move_to_player(delta):
 			velocity = Vector3(target_vec2.x ,gravity, target_vec2.y) * SPEED
 			move_state_machine.travel('Run')
 			currentState == states.ENEMYRUN
-		else:
-			velocity = Vector3.ZERO
-			move_state_machine.travel('Idle')
-			currentState == states.ENEMYIDLE
+		#else:
+			#velocity = Vector3.ZERO
+			#move_state_machine.travel('Idle')
+			#currentState == states.ENEMYIDLE
 	
 	move_and_slide()
