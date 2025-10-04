@@ -28,7 +28,7 @@ func move_to_player(delta):
 		if position.distance_to(player.position) > attack_radius: #if position is greater than attack radius then move towards player
 			velocity = Vector3(target_vec2.x ,gravity, target_vec2.y) * SPEED
 			move_state_machine.travel('Run')
-			currentState == states.ENEMYRUN
+			#currentState == states.ENEMYRUN
 		#else:
 			#velocity = Vector3.ZERO
 			#move_state_machine.travel('Idle')

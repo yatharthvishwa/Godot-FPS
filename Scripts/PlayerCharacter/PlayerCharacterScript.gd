@@ -120,6 +120,7 @@ func _process(_delta):
 	#the behaviours that is preferable to check every "visual" frame
 	
 	#killeffect()
+	showdashkillavailable()
 	
 	slidekill()
 	
@@ -646,6 +647,24 @@ var original_position
 @onready var speedlines = $speedlines
 @onready var dashaudio = $dash
 
+@onready var targetsprite = $targetsprite
+
+@onready var redcrosshair = $crosshair/crosshair
+
+
+func showdashkillavailable():
+	if is_dashing:  # Prevent multiple dashes at once
+		return
+		
+	var dashkillcollider = dashkillray.get_collider()
+	print(dashkillcollider)
+	if dashkillcollider and 'dashkilled' in dashkillcollider and (currentState == states.JUMP or currentState == states.INAIR):
+		targetsprite.visible = true
+		redcrosshair.visible = true
+	else:
+		targetsprite.visible = false
+		redcrosshair.visible = false
+
 
 func dashkill():
 	if is_dashing:  # Prevent multiple dashes at once
@@ -852,4 +871,4 @@ func killeffect():
 			)
 			
 			get_parent().add_child(monsterspawn)
-			await get_tree().create_timer(0.3).timeout
+			await get_tree().create_timer(0.1).timeout

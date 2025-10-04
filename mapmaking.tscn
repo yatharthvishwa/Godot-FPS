@@ -1,0 +1,289 @@
+[gd_scene load_steps=18 format=3 uid="uid://cinilbmqakb78"]
+
+[ext_resource type="Texture2D" uid="uid://c6xbwo2utxfca" path="res://assets/textures/True Colour/str_metalflr3.png" id="1_70ip2"]
+[ext_resource type="PackedScene" uid="uid://bwggrf7sbmkcv" path="res://Scenes/PlayerCharacterScene.tscn" id="2_jsvlw"]
+[ext_resource type="Texture2D" uid="uid://cxbd3qalnmjy7" path="res://assets/skybox/peakpx.jpg" id="3_jsvlw"]
+[ext_resource type="Texture2D" uid="uid://di5761g2jq8st" path="res://assets/textures/256x256/Stone/Stone_13-256x256.png" id="4_ogkm5"]
+[ext_resource type="Texture2D" uid="uid://8jdul2cldmg1" path="res://assets/textures/256x256/Brick/Brick_15-256x256.png" id="5_dwk7e"]
+[ext_resource type="Texture2D" uid="uid://t2147fh5ln1u" path="res://assets/textures/256x256/Brick/Brick_10-256x256.png" id="6_egae0"]
+[ext_resource type="PackedScene" uid="uid://cjxdgmd0kc4bb" path="res://Enemy/Enemy/monster_enemy.tscn" id="7_egae0"]
+[ext_resource type="Texture2D" uid="uid://b12rsjsbxcsbo" path="res://assets/textures/256x256/Brick/Brick_06-256x256.png" id="8_kbjys"]
+[ext_resource type="AudioStream" uid="uid://cjae0g8ww244w" path="res://02. Cultist Base.mp3" id="9_o888p"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ogkm5"]
+albedo_texture = ExtResource("1_70ip2")
+uv1_scale = Vector3(0.695, 0.695, 0.695)
+uv1_triplanar = true
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_ogkm5"]
+panorama = ExtResource("3_jsvlw")
+
+[sub_resource type="Sky" id="Sky_6ee5e"]
+sky_material = SubResource("PanoramaSkyMaterial_ogkm5")
+
+[sub_resource type="Environment" id="Environment_nrv28"]
+background_mode = 2
+background_color = Color(0.539947, 0, 0.00168756, 1)
+background_energy_multiplier = 1.21
+sky = SubResource("Sky_6ee5e")
+tonemap_exposure = 0.95
+glow_enabled = true
+glow_intensity = 2.16
+glow_bloom = 0.17
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.537475, 0, 0.0733729, 1)
+fog_light_energy = 0.38
+fog_density = 0.2258
+fog_sky_affect = 0.483
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nrv28"]
+albedo_texture = ExtResource("4_ogkm5")
+uv1_scale = Vector3(0.235, 0.235, 0.235)
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kbjys"]
+albedo_texture = ExtResource("5_dwk7e")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o888p"]
+albedo_texture = ExtResource("6_egae0")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3hgi5"]
+albedo_texture = ExtResource("8_kbjys")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(7.615, 0, 0, 0, 7.615, 0, 0, 0, 7.615, 68.9102, -4.1099, 0.0623894)
+material_override = SubResource("StandardMaterial3D_ogkm5")
+use_collision = true
+size = Vector3(31.605, 1, 50)
+
+[node name="PlayerCharacter" parent="." instance=ExtResource("2_jsvlw")]
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 1.8, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_nrv28")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.938312, 0.319777, -0.131577, -0.131646, 0.0215037, 0.991064, 0.319749, 0.947249, 0.0219201, 0.74798, 28.1155, -0.479481)
+light_color = Color(0.325181, 0.0680778, 0, 1)
+light_energy = 4.111
+light_angular_distance = 29.5
+light_specular = 0.0
+light_bake_mode = 1
+shadow_enabled = true
+
+[node name="biggertunnel" type="CSGCombiner3D" parent="."]
+transform = Transform3D(1.825, 0, 0, 0, 1.825, 0, 0, 0, 1.825, 0, -0.403, 0)
+material_override = SubResource("StandardMaterial3D_nrv28")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="biggertunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.73169, 0)
+size = Vector3(23.0647, 7.46338, 21.8154)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="biggertunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.57556, 0)
+operation = 2
+size = Vector3(18.512, 13.239, 17.1162)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="biggertunnel"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -8.77459, 1.45262, 0)
+operation = 2
+radius = 3.25293
+height = 9.98
+
+[node name="smallertunnel" type="CSGCombiner3D" parent="."]
+transform = Transform3D(0.681, 0, 0, 0, 0.681, 0, 0, 0, 0.681, -26.3309, -0.403, 0)
+material_override = SubResource("StandardMaterial3D_nrv28")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="smallertunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.53229, 0)
+size = Vector3(23.0647, 13.0646, 21.8154)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="smallertunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.91736, 4.57556, 0)
+operation = 2
+size = Vector3(26.3467, 13.239, 17.1162)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="smallertunnel"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -8.77459, 1.1038, 0)
+operation = 2
+radius = 3.75439
+height = 9.98
+
+[node name="smallertunnel2" type="CSGCombiner3D" parent="."]
+transform = Transform3D(0.681, 0, 0, 0, 0.681, 0, 0, 0, 0.681, -41.6237, -0.403, 0)
+material_override = SubResource("StandardMaterial3D_nrv28")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="smallertunnel2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.17109, 6.53229, 0)
+size = Vector3(31.4069, 13.0646, 21.8154)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="smallertunnel2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.91736, 4.57556, 0)
+operation = 2
+size = Vector3(26.3467, 13.239, 17.1162)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="smallertunnel2"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -22.429, 1.1038, 0)
+operation = 2
+radius = 9.18018
+height = 37.2888
+
+[node name="Slide" type="Node" parent="."]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Slide"]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, -65.3109, -14.8953, 0)
+material_override = SubResource("StandardMaterial3D_kbjys")
+use_collision = true
+size = Vector3(40.867, 1, 23.8982)
+
+[node name="slide" type="CSGCombiner3D" parent="Slide"]
+transform = Transform3D(1.27279, 1.27279, 0, -1.27279, 1.27279, 0, 0, 0, 1.8, -76.2532, -24.9262, 0)
+material_override = SubResource("StandardMaterial3D_o888p")
+use_collision = true
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Slide/slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.53674e-06, 9.22464, 0)
+radius = 6.66
+height = 24.4825
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="Slide/slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.37547, 12.9234, 0)
+operation = 2
+radius = 4.775
+height = 35.2805
+
+[node name="SpotLight3D" type="OmniLight3D" parent="Slide"]
+transform = Transform3D(0.694483, 0, -0.71951, 0.71951, -4.37114e-08, 0.694483, -3.14508e-08, -1, -3.03568e-08, -58.3466, -1.87733, 8.20608e-08)
+light_color = Color(0.799989, 0.732848, 0.408137, 1)
+light_bake_mode = 1
+omni_range = 3.39217
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -104.078, -29.2925, 0)
+material_override = SubResource("StandardMaterial3D_kbjys")
+use_collision = true
+size = Vector3(49.7114, 1, 23.8982)
+
+[node name="MonsterEnemy" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.0265084, 0, 0.999649, 0, 1, 0, -0.999649, 0, 0.0265084, -35.5274, -0.232559, -0.0690376)
+SPEED = 0.0
+rotation_speed_towards_player = 0.0
+notice_radius = 0.0
+attack_radius = 0.0
+
+[node name="dashkillplace" type="CSGCombiner3D" parent="."]
+transform = Transform3D(-4.575, 0, -6.90806e-07, 0, 4.575, 0, 6.90806e-07, 0, -4.575, -133.471, -45.7419, 4.2109e-06)
+material_override = SubResource("StandardMaterial3D_nrv28")
+use_collision = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="dashkillplace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.85599, 0)
+size = Vector3(23.0647, 19.712, 21.8154)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="dashkillplace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.59809, 0)
+operation = 2
+size = Vector3(18.512, 23.284, 17.1162)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="dashkillplace"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 8.47033e-22, 0, 1, -9.82448, 5.00771, 0.136037)
+operation = 2
+radius = 1.71875
+height = 9.98
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -143.886, -37.2443, 3.22245)
+material_override = SubResource("StandardMaterial3D_3hgi5")
+use_collision = true
+radius = 3.74414
+height = 24.02
+
+[node name="MonsterEnemy3" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -143.886, -24.7571, 3.22245)
+SPEED = 0.0
+attack_radius = 0.0
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -160.352, -25.0836, -11.1917)
+material_override = SubResource("StandardMaterial3D_3hgi5")
+use_collision = true
+radius = 3.74414
+height = 24.02
+
+[node name="MonsterEnemy4" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -160.352, -11.3663, -11.1917)
+SPEED = 0.0
+attack_radius = 0.0
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -133.958, -18.3326, -21.5271)
+material_override = SubResource("StandardMaterial3D_3hgi5")
+use_collision = true
+radius = 3.74414
+height = 24.02
+
+[node name="MonsterEnemy5" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -133.958, -4.61532, -21.5271)
+SPEED = 0.0
+attack_radius = 0.0
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -113.147, -10.1707, -12.7585)
+material_override = SubResource("StandardMaterial3D_3hgi5")
+use_collision = true
+radius = 3.74414
+height = 24.02
+
+[node name="MonsterEnemy6" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -113.147, 3.54651, -12.7585)
+SPEED = 0.0
+attack_radius = 0.0
+
+[node name="CSGCylinder3D5" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -121.945, 8.02511, 8.12321)
+material_override = SubResource("StandardMaterial3D_3hgi5")
+use_collision = true
+radius = 3.74414
+height = 24.02
+
+[node name="MonsterEnemy7" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -121.945, 21.7423, 8.12321)
+SPEED = 0.0
+attack_radius = 0.0
+
+[node name="CSGCylinder3D6" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -137.3, 21.3163, -4.47028)
+material_override = SubResource("StandardMaterial3D_3hgi5")
+use_collision = true
+radius = 3.74414
+height = 24.02
+
+[node name="MonsterEnemy8" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -137.3, 36.1367, -4.47028)
+SPEED = 0.0
+attack_radius = 0.0
+
+[node name="CSGCylinder3D7" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -94.2518, 30.4865, 13.6671)
+material_override = SubResource("StandardMaterial3D_3hgi5")
+use_collision = true
+radius = 3.74414
+height = 24.02
+
+[node name="MonsterEnemy9" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(0.921545, 0, -0.388272, 0, 1, 0, 0.388272, 0, 0.921545, -94.2518, 45.3069, 13.6671)
+SPEED = 0.0
+attack_radius = 0.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_o888p")
+volume_db = -10.45
+autoplay = true
