@@ -860,15 +860,15 @@ func killeffect():
 	if Gamemanager.kill_count == 10:
 		fire.emitting = true
 		canfireslash = true
-		for i in range(10):
-			
-			var monsterspawn = monster.instantiate()
-			
-			monsterspawn.position = position + Vector3(
-				randf_range(-20, 20), 
-				0, 
-				randf_range(-20, 20)
-			)
-			
-			get_parent().add_child(monsterspawn)
-			await get_tree().create_timer(0.1).timeout
+		#for i in range(10):
+			#
+			#var monsterspawn = monster.instantiate()
+			#
+			#monsterspawn.position = position + Vector3(
+				#randf_range(-20, 20), 
+				#0, 
+				#randf_range(-20, 20)
+			#)
+			#
+			#get_parent().add_child(monsterspawn)
+			#await get_tree().create_timer(0.1).timeout
