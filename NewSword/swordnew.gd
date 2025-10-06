@@ -4,7 +4,7 @@ extends Node3D
 var can_damage = false
 @onready var hitsound = $hitsound
 
-func _process(delta):
+func _process(_delta):
 	if can_damage:
 		var swordcollider = $swordcollider.get_collider()
 		if swordcollider and 'hit' in swordcollider:

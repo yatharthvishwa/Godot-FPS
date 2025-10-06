@@ -115,10 +115,13 @@ func _ready():
 	#set the raycasts
 	if !ceilingCheck.enabled: ceilingCheck.enabled = true
 	if !floorCheck.enabled: floorCheck.enabled = true
+	
+@onready var speed_value = $"SPEED VALUE"
+
 
 func _process(_delta):
 	#the behaviours that is preferable to check every "visual" frame
-	
+	speed_value.text = "%.1f" % desiredMoveSpeed
 	#killeffect()
 	showdashkillavailable()
 	
@@ -814,6 +817,9 @@ func _on_damage_cooldown_timer_timeout():
 func playerdead():
 	Gamemanager.kill_count = 0
 	is_dead = true
+	call_deferred("_reload_scene_safely")
+
+func _reload_scene_safely():
 	get_tree().reload_current_scene()
 
 @onready var overdrive = $OVERDRIVE

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="FreshStart"
-run/main_scene="uid://u0xwybrvgr1"
+run/main_scene="uid://cinilbmqakb78"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/image="uid://re8u0x30fp5d"
 config/icon="res://icon.svg"
