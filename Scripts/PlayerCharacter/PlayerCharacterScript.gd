@@ -133,7 +133,7 @@ func _process(_delta):
 	
 func _physics_process(delta):
 	
-	wallrun()
+	wallrun(delta)
 	
 	applyslam(delta)
 	
@@ -876,9 +876,16 @@ func killeffect():
 			#await get_tree().create_timer(0.1).timeout
 
 
-func wallrun():
-	print("conditionmet")
+var wallnormal
+
+func wallrun(delta):
 	if Input.is_action_pressed("jump"):
 		if is_on_wall():
-			print("raycolliding")
-			velocity.y = 0
+			var collision = get_slide_collision(0) #GETTING THE FIRST COLLISION
+			if collision:
+				var wallnormal = collision.get_normal() #THE OUTWARD FACING DIRECTION OF THE WALL
+				
+				velocity.y = 0
+				
+				var press_force = -wallnormal * 5.0  #THE PRESSING FORCE OPPOSITE TO NORMAL
+				velocity += press_force * delta
