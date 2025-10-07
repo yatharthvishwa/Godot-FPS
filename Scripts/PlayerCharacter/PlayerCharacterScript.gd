@@ -877,15 +877,31 @@ func killeffect():
 
 
 var wallnormal
-
+var press_force
+var waswallrunning = false
 func wallrun(delta):
 	if Input.is_action_pressed("jump"):
 		if is_on_wall():
 			var collision = get_slide_collision(0) #GETTING THE FIRST COLLISION
 			if collision:
-				var wallnormal = collision.get_normal() #THE OUTWARD FACING DIRECTION OF THE WALL
+				wallnormal = collision.get_normal() #THE OUTWARD FACING DIRECTION OF THE WALL
 				
 				velocity.y = 0
 				
 				var press_force = -wallnormal * 5.0  #THE PRESSING FORCE OPPOSITE TO NORMAL
 				velocity += press_force * delta
+				velocity += -%CameraHolder.transform.basis.z * 1000.0 * delta
+				waswallrunning = true
+	if Input.is_action_just_released("jump") and is_on_wall():
+		print("released")
+		var bounce_force = wallnormal * 20.0
+		var upward_boost = Vector3(0, 10.0, 0)
+		velocity += bounce_force + upward_boost
+		
+	if waswallrunning and !is_on_wall():
+		print("released")
+		var bounce_force = wallnormal * 20.0
+		var upward_boost = Vector3(0, 10.0, 0)
+		velocity += bounce_force + upward_boost
+		waswallrunning = false
+	
