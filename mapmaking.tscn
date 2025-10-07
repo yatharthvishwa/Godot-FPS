@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://cinilbmqakb78"]
+[gd_scene load_steps=58 format=4 uid="uid://cinilbmqakb78"]
 
 [ext_resource type="Script" uid="uid://41870tfwp0yv" path="res://mapmaking.gd" id="1_0fkjg"]
 [ext_resource type="Texture2D" uid="uid://cqd5qovvjac6b" path="res://assets/textures/256x256/Brick/Brick_12-256x256.png" id="1_p1has"]
@@ -154,6 +154,20 @@ uv1_triplanar = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_8djkn"]
 size = Vector3(23.0469, 25.0908, 21.6192)
 
+[sub_resource type="ArrayMesh" id="ArrayMesh_0fkjg"]
+_surfaces = [{
+"aabb": AABB(-4.92194, -0.5, -18.5127, 9.84387, 1, 37.0254),
+"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
+"format": 34359738391,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("foCdwAAAAL8AGpRBfoCdwAAAAL8AGpTBfoCdwAAAAD8AGpTBfoCdQAAAAL8AGpTBfoCdwAAAAL8AGpTBfoCdwAAAAL8AGpRBfoCdwAAAAD8AGpTBfoCdwAAAAL8AGpTBfoCdQAAAAL8AGpTBfoCdwAAAAD8AGpTBfoCdwAAAAD8AGpRBfoCdwAAAAL8AGpRBfoCdwAAAAL8AGpRBfoCdwAAAAD8AGpRBfoCdQAAAAD8AGpRBfoCdQAAAAD8AGpRBfoCdwAAAAD8AGpRBfoCdwAAAAD8AGpTBfoCdwAAAAL8AGpRBfoCdQAAAAL8AGpRBfoCdQAAAAL8AGpTBfoCdQAAAAD8AGpRBfoCdQAAAAL8AGpRBfoCdwAAAAL8AGpRBfoCdQAAAAL8AGpTBfoCdQAAAAL8AGpRBfoCdQAAAAD8AGpRBfoCdQAAAAL8AGpTBfoCdQAAAAD8AGpTBfoCdwAAAAD8AGpTBfoCdwAAAAD8AGpTBfoCdQAAAAD8AGpTBfoCdQAAAAD8AGpRBfoCdQAAAAD8AGpRBfoCdQAAAAD8AGpTBfoCdQAAAAL8AGpTBAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
+}]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_yng5c"]
+points = PackedVector3Array(4.92194, 0.5, 18.5127, 4.92194, -0.5, 18.5127, 4.92194, 0.5, -18.5127, -4.92194, 0.5, 18.5127, -4.92194, -0.5, 18.5127, 4.92194, -0.5, -18.5127, -4.92194, 0.5, -18.5127, -4.92194, -0.5, -18.5127)
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_0fkjg")
 
@@ -164,7 +178,7 @@ use_collision = true
 size = Vector3(31.605, 1, 50)
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("2_jsvlw")]
-transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 1.8, 0)
+transform = Transform3D(1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, -143.253, 35.3437, 76.2473)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nrv28")
@@ -665,6 +679,44 @@ collision_mask = 2
 [node name="CollisionShape3D" type="CollisionShape3D" parent="trapdoor/trapdoorarea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.58694)
 shape = SubResource("BoxShape3D_8djkn")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -149.37, 28.1657, 104.045)
+use_collision = true
+size = Vector3(5.03735, 1, 7.53418)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, 35.5442, 118.934)
+use_collision = true
+size = Vector3(5.03735, 1, 6.34766)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, 35.5442, 164.449)
+use_collision = true
+size = Vector3(5.03735, 1, 6.34766)
+
+[node name="MonsterEnemy4" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, 36.0784, 164.449)
+SPEED = 0.0
+notice_radius = 0.0
+
+[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(4.37114e-08, -1, -1.50996e-07, -1, -4.37114e-08, 0, 0, 1.50996e-07, -1, -137.263, 33.569, 78.3312)
+mesh = SubResource("ArrayMesh_0fkjg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CSGBakedMeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_yng5c")
+
+[node name="CSGBakedMeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(4.37114e-08, -1, -1.50996e-07, -1, -4.37114e-08, 0, 0, 1.50996e-07, -1, -147.085, 33.569, 78.3312)
+mesh = SubResource("ArrayMesh_0fkjg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CSGBakedMeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D2/StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_yng5c")
 
 [connection signal="body_entered" from="LAVA/LAVA AREA" to="." method="_on_lava_area_body_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

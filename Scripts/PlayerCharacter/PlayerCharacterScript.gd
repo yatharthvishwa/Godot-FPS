@@ -129,9 +129,11 @@ func _process(_delta):
 	
 	inputManagement()
 	
-	print(current_health)
+	#print(current_health)
 	
 func _physics_process(delta):
+	
+	wallrun()
 	
 	applyslam(delta)
 	
@@ -635,7 +637,6 @@ func slidekill():
 		var slidecollider = %slidekill.get_collider()
 		if slidecollider and 'slidekilled' in slidecollider:
 			slidecollider.slidekilled()
-			print("slidekill")
 			%CameraHolder.shake_impact(2.0,10.0)
 
 
@@ -660,7 +661,6 @@ func showdashkillavailable():
 		return
 		
 	var dashkillcollider = dashkillray.get_collider()
-	print(dashkillcollider)
 	if dashkillcollider and 'dashkilled' in dashkillcollider and (currentState == states.JUMP or currentState == states.INAIR):
 		targetsprite.visible = true
 		redcrosshair.visible = true
@@ -674,7 +674,6 @@ func dashkill():
 		return
 		
 	var dashkillcollider = dashkillray.get_collider()
-	print(dashkillcollider)
 	if dashkillcollider and 'dashkilled' in dashkillcollider:
 		# Start the dash sequence
 		start_dash_to_enemy(dashkillcollider)
@@ -775,11 +774,8 @@ func _on_slam_impact():
 	slam_phase = "none"
 	speedlines.visible = false
 	%CameraHolder.shake_impact(15.0,20.0)
-	print('notinloop')
 	for enemy in get_tree().get_nodes_in_group("enemy"):
-		print("detecting enemies")
 		if position.distance_to(enemy.position) <= damage_radius:
-			print("radius")
 			if enemy.has_method("slamkilled"):
 				enemy.slamkilled()
 
@@ -878,3 +874,11 @@ func killeffect():
 			#
 			#get_parent().add_child(monsterspawn)
 			#await get_tree().create_timer(0.1).timeout
+
+
+func wallrun():
+	print("conditionmet")
+	if Input.is_action_pressed("jump"):
+		if is_on_wall():
+			print("raycolliding")
+			velocity.y = 0
