@@ -8,7 +8,7 @@ class_name PlayerCharacter
 #states variables
 enum states
 {
-	IDLE, WALK, RUN, CROUCH, SLIDE, JUMP, INAIR, LANDING
+	IDLE, WALK, RUN, CROUCH, SLIDE, JUMP, INAIR, LANDING,WALLRUN
 }
 var currentState 
 
@@ -129,6 +129,7 @@ func _process(_delta):
 	
 	inputManagement()
 	
+	print(currentState)
 	#print(current_health)
 	
 func _physics_process(delta):
@@ -230,7 +231,9 @@ func inputManagement():
 				if Input.is_action_just_pressed("jump"):
 					jump()
 					
-					
+			states.WALLRUN:
+				if Input.is_action_just_pressed("jump"):
+					jump()
 func applies(delta):
 	#handles movement cases based on floor
 	
@@ -243,13 +246,14 @@ func applies(delta):
 				if currentState != states.SLIDE : currentState = states.JUMP
 		else: 
 			velocity.y += fallGravity * delta
-			if currentState != states.SLIDE : currentState = states.INAIR 
+			if currentState != states.SLIDE :currentState = states.INAIR 
 			
 		if currentState == states.SLIDE:
 			if !startSlideInAir: 
 				slideTime = -1 #if the character start slide on the grund, and the jump, the slide is canceled
 				
-		
+		if (currentState == states.INAIR or currentState == states.JUMP) and is_on_wall():
+			currentState = states.WALLRUN
 		if hitGroundCooldown != hitGroundCooldownRef: hitGroundCooldown = hitGroundCooldownRef #reset the before bunny hopping value
 		
 		
@@ -361,7 +365,6 @@ func move(delta):
 				
 				velocity.x = moveDirection.x * desiredMoveSpeed
 				velocity.z = moveDirection.z * desiredMoveSpeed
-				
 				
 			#apply smooth move when in the air (air control)
 			else:
@@ -486,7 +489,9 @@ func animationchange():
 		slidespeedlines.visible = false
 		animation_state_machine.travel('Jumpstart')
 		#camera_animation_player.play("Camerajump", 0)
-	
+	if currentState == states.WALLRUN:
+		animation_state_machine.travel('Run')
+
 
 var jumpaudioplayed = false
 var slideaudioplayed= false
@@ -879,29 +884,44 @@ func killeffect():
 var wallnormal
 var press_force
 var waswallrunning = false
+
+var bounce_force
+var upward_boost
 func wallrun(delta):
-	if Input.is_action_pressed("jump"):
-		if is_on_wall():
-			var collision = get_slide_collision(0) #GETTING THE FIRST COLLISION
-			if collision:
-				wallnormal = collision.get_normal() #THE OUTWARD FACING DIRECTION OF THE WALL
-				
-				velocity.y = 0
-				
-				var press_force = -wallnormal * 5.0  #THE PRESSING FORCE OPPOSITE TO NORMAL
-				velocity += press_force * delta
-				velocity += -%CameraHolder.transform.basis.z * 1000.0 * delta
-				waswallrunning = true
-	if Input.is_action_just_released("jump") and is_on_wall():
-		print("released")
-		var bounce_force = wallnormal * 20.0
-		var upward_boost = Vector3(0, 10.0, 0)
-		velocity += bounce_force + upward_boost
+	if Input.is_action_just_pressed("jump") and is_on_wall() and !is_on_floor():
 		
-	if waswallrunning and !is_on_wall():
+		var collision = get_slide_collision(0) #GETTING THE FIRST COLLISION
+		if collision:
+			wallnormal = collision.get_normal() #THE OUTWARD FACING DIRECTION OF THE WALL
+			
+			velocity.y = 0
+			
+			press_force = -wallnormal * 5.0  #THE PRESSING FORCE OPPOSITE TO NORMAL
+			velocity += press_force * delta
+			#velocity += -%CameraHolder.transform.basis.z * 10.0 * delta
+			
+			waswallrunning = true
+	if Input.is_action_just_pressed("jump") and is_on_wall() and waswallrunning and !is_on_floor():
 		print("released")
-		var bounce_force = wallnormal * 20.0
-		var upward_boost = Vector3(0, 10.0, 0)
-		velocity += bounce_force + upward_boost
-		waswallrunning = false
+		bounce_force = wallnormal * 60.0
+		upward_boost = Vector3(0, 30.0, 0)
+		velocity += bounce_force 
+		velocity.y = 20.0
+		velocity += -%CameraHolder.transform.basis.z * 80.0 * delta # FORWARD BOOST
+		animation_state_machine.travel('Jump')
+	if Input.is_action_pressed("moveForward") and is_on_wall() and !is_on_floor():
+		var collision = get_slide_collision(0) #GETTING THE FIRST COLLISION
+		if collision:
+			wallnormal = collision.get_normal()
+			currentState = states.WALLRUN
+			press_force = -wallnormal * 5.0
+			velocity.y += 20.0 * delta
+			print("wallrunning")
+			animation_state_machine.travel('Run')
+	#if waswallrunning and !is_on_wall():
+		#print("released")
+		#bounce_force = wallnormal * 20.0
+		#upward_boost = Vector3(0, 10.0, 0)
+		#velocity += bounce_force #+ upward_boost
+		#waswallrunning = false
 	
