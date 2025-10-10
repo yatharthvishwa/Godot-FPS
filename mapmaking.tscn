@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=4 uid="uid://cinilbmqakb78"]
+[gd_scene load_steps=64 format=3 uid="uid://cinilbmqakb78"]
 
 [ext_resource type="Script" uid="uid://41870tfwp0yv" path="res://mapmaking.gd" id="1_0fkjg"]
 [ext_resource type="Texture2D" uid="uid://cqd5qovvjac6b" path="res://assets/textures/256x256/Brick/Brick_12-256x256.png" id="1_p1has"]
@@ -20,7 +20,9 @@
 [ext_resource type="ArrayMesh" uid="uid://bxysdl4bs2c32" path="res://assets/model/ruinedwall uneven.res" id="17_wml48"]
 [ext_resource type="Texture2D" uid="uid://b2ng57e6sjfp3" path="res://assets/textures/True Colour/{str_grating6.png" id="18_p1has"]
 [ext_resource type="FontFile" uid="uid://dfetpky7pv2mp" path="res://Fonts/Doom2016Text-GOlBq.ttf" id="19_wml48"]
+[ext_resource type="Texture2D" uid="uid://bu48sfs064bas" path="res://assets/textures/256x256/Brick/Brick_09-256x256.png" id="21_oa8tt"]
 [ext_resource type="Texture2D" uid="uid://bxjdtmrwg7sa2" path="res://assets/textures/256x256/Brick/Brick_01-256x256.png" id="21_pibn7"]
+[ext_resource type="Texture2D" uid="uid://cc6s1jmkulc61" path="res://assets/textures/256x256/Brick/Brick_02-256x256.png" id="22_8djkn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fkjg"]
 albedo_texture = ExtResource("1_p1has")
@@ -155,24 +157,26 @@ uv1_triplanar = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_8djkn"]
 size = Vector3(23.0469, 25.0908, 21.6192)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8djkn"]
-albedo_texture = ExtResource("21_pibn7")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_488ty"]
+albedo_texture = ExtResource("21_oa8tt")
+uv1_scale = Vector3(3.85, 3.85, 3.85)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x8xsi"]
+albedo_texture = ExtResource("22_8djkn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dhrls"]
+albedo_texture = ExtResource("21_oa8tt")
+uv1_scale = Vector3(0.16, 0.16, 0.16)
 uv1_triplanar = true
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_0fkjg"]
-_surfaces = [{
-"aabb": AABB(-4.92194, -0.5, -18.5127, 9.84387, 1, 37.0254),
-"attribute_data": PackedByteArray("AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPwAAgD8AAIA/"),
-"format": 34359738391,
-"material": SubResource("StandardMaterial3D_8djkn"),
-"primitive": 3,
-"uv_scale": Vector4(0, 0, 0, 0),
-"vertex_count": 36,
-"vertex_data": PackedByteArray("foCdwAAAAL8AGpRBfoCdwAAAAL8AGpTBfoCdwAAAAD8AGpTBfoCdQAAAAL8AGpTBfoCdwAAAAL8AGpTBfoCdwAAAAL8AGpRBfoCdwAAAAD8AGpTBfoCdwAAAAL8AGpTBfoCdQAAAAL8AGpTBfoCdwAAAAD8AGpTBfoCdwAAAAD8AGpRBfoCdwAAAAL8AGpRBfoCdwAAAAL8AGpRBfoCdwAAAAD8AGpRBfoCdQAAAAD8AGpRBfoCdQAAAAD8AGpRBfoCdwAAAAD8AGpRBfoCdwAAAAD8AGpTBfoCdwAAAAL8AGpRBfoCdQAAAAL8AGpRBfoCdQAAAAL8AGpTBfoCdQAAAAD8AGpRBfoCdQAAAAL8AGpRBfoCdwAAAAL8AGpRBfoCdQAAAAL8AGpTBfoCdQAAAAL8AGpRBfoCdQAAAAD8AGpRBfoCdQAAAAL8AGpTBfoCdQAAAAD8AGpTBfoCdwAAAAD8AGpTBfoCdwAAAAD8AGpTBfoCdQAAAAD8AGpTBfoCdQAAAAD8AGpRBfoCdQAAAAD8AGpRBfoCdQAAAAD8AGpTBfoCdQAAAAL8AGpTBAAD/f/9//n8AAP9//3/+fwAA/3//f/5//38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8/AAD/f/9//n8AAP9//3/+fwAA/3//f/5//3//fwAA/z//f/9/AAD/P/9//38AAP8//3//////AAD/f/////8AAP9//////wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/3//fwAA/z//f/9/AAD/P/9//38AAP8/////f/9//n////9//3/+f////3//f/5//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/")
-}]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oa8tt"]
+albedo_texture = ExtResource("21_pibn7")
+uv1_scale = Vector3(0.13, 0.13, 0.13)
+uv1_triplanar = true
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_yng5c"]
-points = PackedVector3Array(4.92194, 0.5, 18.5127, 4.92194, -0.5, 18.5127, 4.92194, 0.5, -18.5127, -4.92194, 0.5, 18.5127, -4.92194, -0.5, 18.5127, 4.92194, -0.5, -18.5127, -4.92194, 0.5, -18.5127, -4.92194, -0.5, -18.5127)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_co78l"]
+albedo_texture = ExtResource("21_oa8tt")
+uv1_scale = Vector3(5.435, 5.435, 5.435)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_0fkjg")
@@ -691,43 +695,86 @@ transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -149.3
 use_collision = true
 size = Vector3(5.03735, 1, 7.53418)
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="."]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, 35.5442, 118.934)
-use_collision = true
-size = Vector3(5.03735, 1, 6.34766)
-
 [node name="CSGBox3D4" type="CSGBox3D" parent="."]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, 35.5442, 164.449)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, -37.4377, 227.293)
+material_override = SubResource("StandardMaterial3D_488ty")
 use_collision = true
-size = Vector3(5.03735, 1, 6.34766)
+size = Vector3(18.5388, 146.964, 44.4838)
 
 [node name="MonsterEnemy4" parent="." instance=ExtResource("7_egae0")]
-transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, 36.0784, 164.449)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -144.403, 36.5008, 213.088)
 SPEED = 0.0
 notice_radius = 0.0
 
-[node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(7.1031e-07, -1, -4.24223e-06, -16.25, -4.37114e-08, -1.85434e-13, 1.65171e-19, 1.50996e-07, -28.095, -137.263, 33.569, 129.456)
-mesh = SubResource("ArrayMesh_0fkjg")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="CSGBakedMeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_yng5c")
-
-[node name="CSGBakedMeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(7.1031e-07, -1, -4.24223e-06, -16.25, -4.37114e-08, -1.85434e-13, 1.65171e-19, 1.50996e-07, -28.095, -147.085, 33.569, 129.456)
-mesh = SubResource("ArrayMesh_0fkjg")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="CSGBakedMeshInstance3D2"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGBakedMeshInstance3D2/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_yng5c")
-
 [node name="CSGBox3D5" type="CSGBox3D" parent="."]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -142.171, 28.1657, 105.088)
+material_override = SubResource("StandardMaterial3D_x8xsi")
 use_collision = true
 size = Vector3(10.7529, 1, 49.7356)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -28.0171, -79.3986, 227.293)
+material_override = SubResource("StandardMaterial3D_dhrls")
+use_collision = true
+size = Vector3(18.5388, 146.964, 44.4838)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="."]
+transform = Transform3D(1.50996e-07, 4.37114e-08, -1, -1, -4.37114e-08, -1.50996e-07, -4.37114e-08, 1, 4.37114e-08, -89.5945, 9.50669, 246.774)
+material_override = SubResource("StandardMaterial3D_oa8tt")
+use_collision = true
+size = Vector3(103.805, 1, 135.35)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -147.669, 35.3391, 155.173)
+material_override = SubResource("StandardMaterial3D_co78l")
+use_collision = true
+size = Vector3(1, 58.5059, 105.199)
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="."]
+transform = Transform3D(1.50996e-07, 4.37114e-08, -1, -1, -4.37114e-08, -1.50996e-07, -4.37114e-08, 1, 4.37114e-08, 48.8791, 9.50669, 246.774)
+material_override = SubResource("StandardMaterial3D_oa8tt")
+use_collision = true
+size = Vector3(35.4443, 1, 135.35)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="."]
+transform = Transform3D(1.50996e-07, 4.37114e-08, -1, -1, -4.37114e-08, -1.50996e-07, -4.37114e-08, 1, 4.37114e-08, 48.8791, 9.50669, 234.644)
+material_override = SubResource("StandardMaterial3D_oa8tt")
+use_collision = true
+size = Vector3(35.4443, 1, 135.35)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="."]
+transform = Transform3D(1.50996e-07, 4.37114e-08, -1, -1.06581e-14, 1, 4.37114e-08, 1, 1.06581e-14, 1.50996e-07, 127.834, -6.47099, 234.644)
+material_override = SubResource("StandardMaterial3D_oa8tt")
+use_collision = true
+size = Vector3(35.4443, 1, 79.057)
+
+[node name="MonsterEnemy5" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30.7132, -5.62743, 239.668)
+SPEED = 0.0
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="."]
+transform = Transform3D(1.50996e-07, 4.37114e-08, -1, -1.06581e-14, 1, 4.37114e-08, 1, 1.06581e-14, 1.50996e-07, 192.351, -0.00237465, 234.644)
+material_override = SubResource("StandardMaterial3D_oa8tt")
+use_collision = true
+size = Vector3(35.4443, 1, 79.057)
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="."]
+transform = Transform3D(1.50996e-07, 4.37114e-08, -1, -1.06581e-14, 1, 4.37114e-08, 1, 1.06581e-14, 1.50996e-07, 265.791, -86.0113, 234.644)
+material_override = SubResource("StandardMaterial3D_oa8tt")
+use_collision = true
+size = Vector3(35.4443, 1, 225.936)
+
+[node name="MonsterEnemy6" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 184.242, -82.9368, 233.112)
+notice_radius = 20.0
+
+[node name="MonsterEnemy7" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179.908, -82.9368, 233.112)
+notice_radius = 20.0
+
+[node name="MonsterEnemy8" parent="." instance=ExtResource("7_egae0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179.908, -82.9368, 226.953)
+notice_radius = 20.0
 
 [connection signal="body_entered" from="LAVA/LAVA AREA" to="." method="_on_lava_area_body_entered"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

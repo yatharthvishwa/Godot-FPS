@@ -68,7 +68,7 @@ var nbJumpsInAirAllowedRef : int
 
 #slide variables
 @export_group("slide variables")
-@export var slideTime : float
+@export var slideTime = 1.0
 @export var slideTimeRef : float 
 var slideVector : Vector2 = Vector2.ZERO #slide direction
 var startSlideInAir : bool
@@ -129,7 +129,6 @@ func _process(_delta):
 	
 	inputManagement()
 	
-	print(currentState)
 	#print(current_health)
 	
 func _physics_process(delta):
@@ -493,10 +492,15 @@ func animationchange():
 		animation_state_machine.travel('Run')
 
 
+@onready var wallrunningaudio = $wallrunning
+
+
 var jumpaudioplayed = false
 var slideaudioplayed= false
 func audiochanges():
 	if currentState == states.IDLE:
+		if wallrunningaudio.playing:
+			wallrunningaudio.stop()
 		jumpaudioplayed = false
 		slideaudioplayed= false
 		if jumpaudioplayed:
@@ -508,6 +512,8 @@ func audiochanges():
 		if run.playing:
 			run.stop()
 	elif currentState == states.WALK:
+		if wallrunningaudio.playing:
+			wallrunningaudio.stop()
 		jumpaudioplayed = false
 		slideaudioplayed= false
 		if jumpaudioplayed:
@@ -520,6 +526,8 @@ func audiochanges():
 		if run.playing:
 			run.stop()
 	elif currentState == states.RUN:
+		if wallrunningaudio.playing:
+			wallrunningaudio.stop()
 		jumpaudioplayed = false
 		slideaudioplayed= false
 		if jumpaudioplayed:
@@ -531,6 +539,8 @@ func audiochanges():
 		if walk.playing:
 			walk.stop()
 	elif currentState == states.SLIDE and is_on_floor():
+		if wallrunningaudio.playing:
+			wallrunningaudio.stop()
 		jumpaudioplayed = false
 		if jumpaudioplayed:
 			jump_audio.stop()
@@ -544,6 +554,8 @@ func audiochanges():
 		if walk.playing:
 			walk.stop()
 	elif currentState == states.INAIR:
+		if wallrunningaudio.playing:
+			wallrunningaudio.stop()
 		jumpaudioplayed = false
 		slideaudioplayed= false
 		if jumpaudioplayed:
@@ -557,6 +569,8 @@ func audiochanges():
 		if walk.playing:
 			walk.stop()
 	elif currentState == states.JUMP:
+		if wallrunningaudio.playing:
+			wallrunningaudio.stop()
 		if !jumpaudioplayed:
 			jump_audio.play()
 			jumpaudioplayed = true
@@ -568,9 +582,24 @@ func audiochanges():
 			run.stop()
 		if walk.playing:
 			walk.stop()
+	elif currentState == states.WALLRUN and is_on_wall():
+		jumpaudioplayed = false
+		slideaudioplayed= false
+		if !wallrunningaudio.playing:
+			wallrunningaudio.play()
+		if jumpaudioplayed:
+			jump_audio.stop()
+		if falling.playing:
+			falling.stop()
+		if run.playing:
+			run.stop()
+		if walk.playing:
+			walk.stop()
 	else:
 		jumpaudioplayed = false
 		slideaudioplayed= false
+		if wallrunningaudio.playing:
+			wallrunningaudio.stop()
 		if jumpaudioplayed:
 			jump_audio.stop()
 		if falling.playing:
@@ -666,7 +695,7 @@ func showdashkillavailable():
 		return
 		
 	var dashkillcollider = dashkillray.get_collider()
-	if dashkillcollider and 'dashkilled' in dashkillcollider and (currentState == states.JUMP or currentState == states.INAIR):
+	if dashkillcollider and 'dashkilled' in dashkillcollider and (currentState == states.JUMP or currentState == states.INAIR or currentState == states.WALLRUN):
 		targetsprite.visible = true
 		redcrosshair.visible = true
 	else:
@@ -727,7 +756,7 @@ func applyshake(intensity:float,time:float):
 
 
 func _input(event):
-	if event.is_action_pressed("dash_kill") and (currentState == states.INAIR or currentState == states.JUMP): # add "dash_kill" in Input Map
+	if event.is_action_pressed("dash_kill") and (currentState == states.INAIR or currentState == states.JUMP or currentState == states.WALLRUN): # add "dash_kill" in Input Map
 		dashkill()
 	if event.is_action_pressed("groundslam")  and (currentState == states.INAIR or currentState == states.JUMP) :
 		slam()
@@ -881,12 +910,25 @@ func killeffect():
 			#await get_tree().create_timer(0.1).timeout
 
 
-var wallnormal
+var wallnormal: Vector3 = Vector3.ZERO
 var press_force
 var waswallrunning = false
 
 var bounce_force
 var upward_boost
+
+
+@onready var rightwallrun = $CameraHolder/Camera3D/rightwallrun
+@onready var leftwallrun = $CameraHolder/Camera3D/leftwallrun
+
+
+var cam_tilt = 0.0
+var target_tilt = 0.0
+var tilt_speed = 10.0
+var tilt_angle = 17.0
+
+
+
 func wallrun(delta):
 	if Input.is_action_just_pressed("jump") and is_on_wall() and !is_on_floor():
 		
@@ -901,23 +943,59 @@ func wallrun(delta):
 			#velocity += -%CameraHolder.transform.basis.z * 10.0 * delta
 			
 			waswallrunning = true
+	
+	#WALL JUMPING
 	if Input.is_action_just_pressed("jump") and is_on_wall() and waswallrunning and !is_on_floor():
 		print("released")
-		bounce_force = wallnormal * 60.0
-		upward_boost = Vector3(0, 30.0, 0)
-		velocity += bounce_force 
-		velocity.y = 20.0
-		velocity += -%CameraHolder.transform.basis.z * 80.0 * delta # FORWARD BOOST
+		bounce_force = wallnormal * 60.0  #force that is oppsite to wall
+		upward_boost = Vector3(0, 25.0, 0)
+		velocity += bounce_force + upward_boost
+		#velocity.y = 20.0
+		var forward_dir = -%CameraHolder.global_transform.basis.z.normalized() # FORWARD BOOST
+		velocity += forward_dir * 100.0  # not multiplied by delta, acts like impulse
+		
 		animation_state_machine.travel('Jump')
+	
+	#WALL RUNNING
 	if Input.is_action_pressed("moveForward") and is_on_wall() and !is_on_floor():
+		if Input.is_action_just_released("moveForward"):
+			currentState = states.INAIR
+		if !Input.is_action_pressed("moveForward"):
+			currentState = states.INAIR
 		var collision = get_slide_collision(0) #GETTING THE FIRST COLLISION
 		if collision:
+			if Input.is_action_just_released("moveForward"):
+				currentState = states.INAIR
+			if !Input.is_action_pressed("moveForward"):
+				currentState = states.INAIR
 			wallnormal = collision.get_normal()
 			currentState = states.WALLRUN
 			press_force = -wallnormal * 5.0
 			velocity.y += 20.0 * delta
-			print("wallrunning")
+			velocity.z += 40.0 * delta
 			animation_state_machine.travel('Run')
+			
+			
+			##camera tilt
+			#var forward_dir = -global_transform.basis.z.normalized()
+			#var right_dir = global_transform.basis.x.normalized()
+		#
+			#var side = forward_dir.cross(wallnormal).y
+		#
+			#if side > 0:
+				#target_tilt = tilt_angle     # wall on right
+			#else:
+				#target_tilt = -tilt_angle    # wall on left
+	#else:
+		#currentState = states.INAIR
+		## reset tilt when not wallrunning
+		#target_tilt = 0.0
+#
+	## smooth tilt transition
+	#cam_tilt = lerp(cam_tilt, target_tilt, delta * tilt_speed)
+	#%CameraHolder.rotation_degrees.z = cam_tilt
+
+		
 	#if waswallrunning and !is_on_wall():
 		#print("released")
 		#bounce_force = wallnormal * 20.0

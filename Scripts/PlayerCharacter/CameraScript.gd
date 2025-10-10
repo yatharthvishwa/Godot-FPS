@@ -95,28 +95,48 @@ func _process(delta):
 	FOVChange(delta) 
 	
 	lastFOV = targetFOV #get the last FOV used
-	
+
+@onready var rightwallrun = $Camera3D/rightwallrun
+@onready var leftwallrun = $Camera3D/leftwallrun
+
+
 func applies(delta):
 	#this function manage the differents camera modifications relative to a specific state, except for the FOV
-	match playerChar.currentState:
-		playerChar.states.IDLE:
-			position.y = lerp(position.y, 0.715, crouchCameraLerpSpeed * delta)
-			rotation.z = lerp(rotation.z, deg_to_rad(0.0), slideCameraLerpSpeed * delta)
-		playerChar.states.WALK:
-			position.y = lerp(position.y, 0.715, crouchCameraLerpSpeed * delta)
-			rotation.z = lerp(rotation.z, deg_to_rad(0.0), slideCameraLerpSpeed * delta)
-		playerChar.states.RUN:
-			position.y = lerp(position.y, 0.715, crouchCameraLerpSpeed * delta)
-			rotation.z = lerp(rotation.z, deg_to_rad(0.0), slideCameraLerpSpeed * delta)
-		playerChar.states.CROUCH:
-			#lean the camera
-			position.y = lerp(position.y, 0.715 + crouchCameraDepth, crouchCameraLerpSpeed * delta)
-			rotation.z = lerp(rotation.z, deg_to_rad(6.0) * playCharInputDir.x if playCharInputDir.x != 0.0 else deg_to_rad(6.0), slideCameraLerpSpeed * delta)
-		playerChar.states.SLIDE:
-			#lean the camera a bit more
-			position.y = lerp(position.y, 0.715 + slideCameraDepth, crouchCameraLerpSpeed * delta)
-			rotation.z = lerp(rotation.z, deg_to_rad(10.0) * playCharInputDir.x if playCharInputDir.x != 0.0 else deg_to_rad(10.0), slideCameraLerpSpeed * delta)
-			
+	if playerChar.currentState ==playerChar.states.IDLE:
+		position.y = lerp(position.y, 0.715, crouchCameraLerpSpeed * delta)
+		rotation.z = lerp(rotation.z, deg_to_rad(0.0), slideCameraLerpSpeed * delta)
+	elif playerChar.currentState ==playerChar.states.WALK:
+		position.y = lerp(position.y, 0.715, crouchCameraLerpSpeed * delta)
+		rotation.z = lerp(rotation.z, deg_to_rad(0.0), slideCameraLerpSpeed * delta)
+	elif playerChar.currentState ==playerChar.states.RUN:
+		position.y = lerp(position.y, 0.715, crouchCameraLerpSpeed * delta)
+		rotation.z = lerp(rotation.z, deg_to_rad(0.0), slideCameraLerpSpeed * delta)
+	elif playerChar.currentState ==playerChar.states.CROUCH:
+		#lean the camera
+		position.y = lerp(position.y, 0.715 + crouchCameraDepth, crouchCameraLerpSpeed * delta)
+		rotation.z = lerp(rotation.z, deg_to_rad(6.0) * playCharInputDir.x if playCharInputDir.x != 0.0 else deg_to_rad(6.0), slideCameraLerpSpeed * delta)
+	elif playerChar.currentState ==playerChar.states.SLIDE:
+		#lean the camera a bit more
+		position.y = lerp(position.y, 0.715 + slideCameraDepth, crouchCameraLerpSpeed * delta)
+		rotation.z = lerp(rotation.z, deg_to_rad(10.0) * playCharInputDir.x if playCharInputDir.x != 0.0 else deg_to_rad(10.0), slideCameraLerpSpeed * delta)
+	elif playerChar.currentState == playerChar.states.WALLRUN:
+		var tilt_angle = 20.0 # degrees
+		var target_tilt = 0.0
+		# Detect which wall we're running on
+		if leftwallrun.is_colliding() and !rightwallrun.is_colliding():
+			# Tilt camera *right* (away from wall)
+			target_tilt = deg_to_rad(-tilt_angle)
+		elif rightwallrun.is_colliding() and !leftwallrun.is_colliding():
+			# Tilt camera *left* (away from wall)
+			target_tilt = deg_to_rad(tilt_angle)
+		else:
+			# No wall detected or both hit, reset
+			target_tilt = 0.0
+		# Smoothly tilt camera
+		rotation.z = lerp(rotation.z, target_tilt, 5.0 * delta)
+	else:
+		# Not wallrunning — reset tilt
+		rotation.z = lerp(rotation.z, 0.0, 5.0 * delta)
 func cameraBob(delta):
 	#this function manage the bobbing of the camera when the character is moving
 	if playerChar.currentState != playerChar.states.SLIDE : #the bobbing doesn't apply when the character is sliding or is dashing
